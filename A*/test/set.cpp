@@ -29,5 +29,16 @@ int main(){
 
 	for(it = cost.begin();it!=cost.end();it++)
 		cout<<it->first<<","<<it->second<<endl;
+
+	cout<<"------------"<<endl;
+
+	cost.insert(make_pair(1,6));
+	for(it = cost.begin();it!=cost.end();it++)
+		cout<<it->first<<","<<it->second<<endl;
+
+	for(it = cost.begin();it!=cost.end();it++)
+		cout<< it->second<<",";
+	cout<<endl;
+	
 	return 0;
 }
