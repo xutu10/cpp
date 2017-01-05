@@ -7,7 +7,6 @@ vector<vector<int> > cost;
 vector<vector<int> > options;
 vector<int > goal =  {5,1,2,3,6,9,8,7,4};
 
-
 int cost[9][9] = {{2,1,2,1,0,1,2,1,2}, // num 0
 				  {0,1,2,1,2,3,2,3,4}, // 1
 				  {1,0,1,2,1,2,3,2,3}, // 2
