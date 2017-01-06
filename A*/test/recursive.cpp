@@ -1,13 +1,13 @@
 #include<iostream>
 #include<vector>
+#include<set>
+#include<utility>
 using namespace std;
 
+
+vector<int>  goal =  {4,0,1,2,5,8,7,6,3};
+
 // distance to his goal position for each number
-vector<vector<int> > cost;
-vector<vector<int> > options;
-vector<int > goal =  {5,1,2,3,6,9,8,7,4};
-
-
 int cost[9][9] = {{2,1,2,1,0,1,2,1,2}, // num 0
 				  {0,1,2,1,2,3,2,3,4}, // 1
 				  {1,0,1,2,1,2,3,2,3}, // 2
@@ -19,6 +19,7 @@ int cost[9][9] = {{2,1,2,1,0,1,2,1,2}, // num 0
 				  {1,2,3,0,1,2,1,2,3}, // 8			  
 };
 
+<<<<<<< HEAD
 // optional positions to go according to current position of num 0
 int options[9][4] = {{2,4},    // current position 1     
 					{1,3,5},  // 2
@@ -29,41 +30,75 @@ int options[9][4] = {{2,4},    // current position 1
 					{4,8},    //7
 					{5,7,9},  //8
 					{6,8}	  //9
+=======
+// optional positions to go according to current posisition of num 0
+vector<vector<int> > options = {{0,3},    // current position 0
+				      {0,2,4},  // 1
+					  {1,5},    // 2
+					  {0,4,6},  // 3
+					  {1,3,5,7}, // 4
+					  {2,4,8},  //5
+					  {3,7},    //6
+					  {4,6,8},  //7
+					  {5,7}	  //8
+>>>>>>> feature
 };
 
-void init_vector();
-int expand(int[]);
-bool is_goal(int[],int[]);
+int expand(vector<int> );
+vector<int> change(vector<int>, int);
+
+
 int main(){
 
-	int status[9] = {8,4,1,3,6,9,4,7,2};
+	vector<int> status = {7,3,0,2,4,8,5,6,1};
 	return 0;
 }
 
-int expand(int arr[]){
+int expand(vector<int>  status){
 
-	if(is_goal(arr,goal))
+	if(status == goal)
 		return 1;
 
-	int option[] = 
+	// get the current position of num 0
+	int pos0 = status[0];
+	// get the options base on the current position of 0
+	int alter_nums = options[pos0].size();
+	vector<int > alter;
+	// pack the options in a vector
+ 	for(int i = 0; i < alter_nums;i++)
+		alter.push_back(options[pos0][i]);
+
+	// store the cost for all alternatives
+	set<pair<int,int> > alter_cost;
+	// swap position in the alternative list and num 0
+	// compute the cost of each alternative
+	// sort the alternatives by cost in ascent order
+
+	// walk through the alternatives
+   	for(int i = 0; i<alter_nums;i++){
+		vector<int> tem = status;
+		tem = change(tem,alter[i]);
+		int tem_cost = 0;
+		// walk through the cost according to the current status
+		// sum the cost for this alternative
+		for(int j = 0; j<9;j++)
+			tem_cost += cost[j][tem[j]]; 
+
+		//pack the altertive position and its cost in set
+		// automatic sorted by key, key is the cost, value is position
+		pair<int,int> tem_set = make_pair(tem_cost,alter[i]);
+		alter_cost.insert(tem_set);
+	}
 	
 	
 	return 1;
 }
 
-bool is_goal(int arr1[],int arr2[]){
-	bool flag = true;
+// search the current position of the number,which will be swaped by num 0, then swap
+vector<int> change(vector<int> status, int num){
+	int i = 0;
+	for(i = 0; i < 9  && num != status[i];i++ );
+	swap(status[0],status[i]);
 
-	for(int i =0;i<9;i++){
-		if(arr1[i] != arr2[i]){
-			flag = false;
-			break;
-		}
-	}
-	return flag;
-}
-
-void init_vector(){
-
-	
+	return status;
 }
