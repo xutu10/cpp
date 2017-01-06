@@ -19,18 +19,6 @@ int cost[9][9] = {{2,1,2,1,0,1,2,1,2}, // num 0
 				  {1,2,3,0,1,2,1,2,3}, // 8			  
 };
 
-<<<<<<< HEAD
-// optional positions to go according to current position of num 0
-int options[9][4] = {{2,4},    // current position 1     
-					{1,3,5},  // 2
-					{2,6},    // 3
-					{1,5,7},  // 4
-					{2,4,6,8}, // 5
-					{3,5,9},  //6 
-					{4,8},    //7
-					{5,7,9},  //8
-					{6,8}	  //9
-=======
 // optional positions to go according to current posisition of num 0
 vector<vector<int> > options = {{0,3},    // current position 0
 				      {0,2,4},  // 1
@@ -41,7 +29,6 @@ vector<vector<int> > options = {{0,3},    // current position 0
 					  {3,7},    //6
 					  {4,6,8},  //7
 					  {5,7}	  //8
->>>>>>> feature
 };
 
 int expand(vector<int> );
