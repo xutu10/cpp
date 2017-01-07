@@ -9,7 +9,7 @@ using namespace std;
 vector<int>  goal =  {4,0,1,2,5,8,7,6,3};
 vector<int> path;
 int couter = 0;
-vector<vector<int> > history;
+//vector<vector<int> > history;
 // distance to his goal position for each number
 int cost[9][9] = {{2,1,2,1,0,1,2,1,2}, // num 0
 				  {0,1,2,1,2,3,2,3,4}, // 1
@@ -37,7 +37,7 @@ vector<vector<int> > options = {{0,3},    // current position 0
 
 int expand(vector<int> );
 vector<int> change(vector<int>, int);
-int cmp_history(vector<int>);
+//int cmp_history(vector<int>);
 
 int main(){
 
@@ -58,7 +58,7 @@ int main(){
 
 int expand(vector<int>  status){
 	couter++;
-	history.push_back(status);
+	//	history.push_back(status);
 	cout<<"---"<<couter<<":";
 	for(int i : status)
 		cout<<i<<",";
@@ -102,10 +102,10 @@ int expand(vector<int>  status){
 	set<pair<int,int> > :: iterator it;
 	for(it= alter_cost.begin();it!=alter_cost.end();it++){
 		vector<int> new_status = change(status,it->second);
-		if(cmp_history(new_status)){
-			cout<<"continue"<<endl;
-			continue;
-		}
+		// if(cmp_history(new_status)){
+		// 	cout<<"continue"<<endl;
+		// 	continue;
+		// }
 			
 		flag = expand(new_status);
 		// found the goal, add the current position to path
@@ -127,11 +127,11 @@ vector<int> change(vector<int> status, int num){
 	return status;
 }
 
-int cmp_history(vector<int> status){
-	int i =0;
-	for(i = 0; status != history[i] && i<history.size();i++);
-	if(i == history.size())
-		return 0;
-	else
-		return 1;	
-}
+// int cmp_history(vector<int> status){
+// 	int i =0;
+// 	for(i = 0; status != history[i] && i<history.size();i++);
+// 	if(i == history.size())
+// 		return 0;
+// 	else
+// 		return 1;	
+// }
