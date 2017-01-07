@@ -70,9 +70,9 @@ int main(){
 		pair<int,int> tem_set = make_pair(tem_cost,alter[i]);
 		alter_cost.insert(tem_set);
 	}
-	// set<pair<int,int> > :: iterator it;
-	// for(it = alter_cost.begin();it!=alter_cost.end();it++)
-	// 	cout<<it->first<<","<<it->second<<endl;
+	set<pair<int,int> > :: iterator it;
+	for(it = alter_cost.begin();it!=alter_cost.end();it++)
+		cout<<it->first<<","<<it->second<<endl;
 	
 	return 0;
 }

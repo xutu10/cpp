@@ -63,8 +63,8 @@ int expand(vector<int>  status){
 
 	// walk through the alternatives
    	for(int i = 0; i<alter_nums;i++){
-		vector<int> tem = status;
-		tem = change(tem,alter[i]);
+		vector<int> tem ;
+		tem = change(status,alter[i]);
 		int tem_cost = 0;
 		// walk through the cost according to the current status
 		// sum the cost for this alternative
@@ -76,7 +76,12 @@ int expand(vector<int>  status){
 		pair<int,int> tem_set = make_pair(tem_cost,alter[i]);
 		alter_cost.insert(tem_set);
 	}
-	
+
+	set<pair<int,int> > :: iterator it;
+	for(it= alter_cost.begin();it!=alter_cost.end();it++){
+		vector<int> new_status = change(status,it->second);
+		expand(new_status);
+	}
 	
 	return 1;
 }
