@@ -1,0 +1,5 @@
+#include"TV_controller.h"
+
+void TV_controller:: Volum_up(TV& tv){
+		tv.volume_ += 1;
+	}

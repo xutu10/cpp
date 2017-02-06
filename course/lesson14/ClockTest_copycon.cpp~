@@ -1,0 +1,19 @@
+#include"Clock_copycon.h"
+#include<iostream>
+using namespace std;
+
+void ctest(const Clock c){
+	
+}
+
+int main(int argc, char *argv[])
+{
+    Clock c1(1,1,1);
+	c1.display();
+	Clock c2(c1);
+	// Clock c2 = c1; equal to above
+	// when formal param transfer to actual param, call the copycon
+//	ctest(c1);
+	ctest(1,1,1);
+    return 0;
+}

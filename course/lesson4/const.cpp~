@@ -1,0 +1,13 @@
+#include<iostream>
+using namespace std;
+#include<stdio.h>
+
+int main(int argc, char *argv[])
+{
+    double a = 3.14;
+	const int& ref = a;
+	printf("a:%lf, ref: %d",a,ref);
+	printf("a:%d, ref: %d",&a,&ref);
+	
+    return 0;
+}

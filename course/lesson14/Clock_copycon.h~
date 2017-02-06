@@ -1,0 +1,12 @@
+#pragma once
+
+class Clock{
+public:
+	int second;
+	int minute;
+	int hour;
+	Clock(int h, int m, int s);
+	void display();
+	void update();
+	~Clock();	
+};

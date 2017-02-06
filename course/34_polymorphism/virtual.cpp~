@@ -1,0 +1,43 @@
+#include<iostream>
+using namespace std;
+
+class Parent{
+public:
+	virtual void fun1(){
+		cout<<"Base:fun1..."<<endl;
+	}
+	virtual void fun2(){
+		cout<<"Base:fun2..."<<endl;
+	}
+
+	void fun3(){
+		cout<<"Base:fun3..."<<endl;
+	}
+};
+
+class Child: public Parent{
+public:
+	void fun1(){// default virtual func
+		cout<<"child fun1"<<endl;
+	}
+	void fun2(){//default virtual func
+		cout<<"child fun2"<<endl;
+	}
+	void fun3(){
+		cout<<"child fun3"<<endl;
+	}
+
+};
+
+
+int main(int argc, char *argv[])
+{
+    Parent* p;
+	Child c;
+	p = &c;
+	p->fun1;
+	p->fun2;
+	p->fun3;
+	
+    return 0;
+}

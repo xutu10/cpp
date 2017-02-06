@@ -1,0 +1,12 @@
+#pragma
+
+class TV{
+	friend class TV_controller;
+public:
+	TV(int volume,int chanel);
+	
+private:
+	int volume_;
+	int chanel_;
+
+};

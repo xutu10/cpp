@@ -1,0 +1,29 @@
+#include<iostream>
+using namespace std;
+
+class Singleton{
+public:
+	static Singleton* GetInstance(){
+		if(instance_ == NULL)
+			instance_ = new Singleton();
+	}
+
+private:
+	Singleton(){
+		
+	}
+
+	static Singleton* instance_;
+};
+
+Singleton* Singleton::instance_;
+
+int main(int argc, char *argv[])
+{
+    // Singleton s1;
+	// return the same instance whatever how many times it's called.
+	Singleton* s = Singleton :: GetInstance();
+	Singleton* s = Singleton :: GetInstance();
+		
+    return 0;
+}

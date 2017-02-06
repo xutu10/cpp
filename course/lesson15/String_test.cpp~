@@ -1,0 +1,9 @@
+#include"String.h"
+
+int main(int argc, char *argv[])
+{
+    String s1("aaa");
+    String s2("bbb");
+	
+    return 0;
+}

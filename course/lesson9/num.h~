@@ -1,0 +1,22 @@
+#ifndef NUM_H
+#define NUM_H
+class Num
+{
+    public:
+	int add(int a, int b);
+	//  2.way to define a inline method
+	/* int add(int a, int b){ */
+	/* 	reuturn a+b; */
+	/* } */ 
+};
+
+#endif
+
+
+
+
+
+
+
+
+

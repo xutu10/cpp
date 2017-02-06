@@ -1,0 +1,37 @@
+#include<map>
+#include<string>
+#include<iostream>
+using namespace std;
+
+int main(int argc, char *argv[])
+{
+    map<string,int> map_t;
+	map_t["a"] = 6;  // operator[](string& index) overloading
+	map_t["a"] = 16;  // it's allowed, but the value will be updated to 16.
+// these two ways doesn't allow the same key. do nothing when comes up.
+	map_t.insert(map<string,int>::value_type("d",8));
+	map_t.insert(pair<string,int>("c",10));
+	
+	map_t["b"] = 12;
+
+
+	map<string,int>::const_iterator it;
+	for(it = map_t.begin();it != map_t.end();++it){
+		cout<<it->first<<"  "<<it->second<<endl;
+	}
+
+	//search
+	int n = map_t["a"]; //return default value 0, when the key doesn't exist. 
+// by const_iterator the value can't be changed.
+	map<string,int>::iterator it_find;
+	it_find = map_t.find("b");
+	if(it_find != map_t.end())
+		cout<<it_find->second<<endl;
+	else
+		cout<<"not found"<<endl;
+
+	//remove
+	map_t.erase("a");
+	map_t.erase(it_find);
+    return 0;
+}

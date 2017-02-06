@@ -1,0 +1,19 @@
+#include<iostream>
+using namespace std;
+
+struct Student{
+  char name;
+  int age;
+  //double point;
+};
+
+int main(void){
+
+  Student stud;
+  cout<<sizeof(Student)<<endl;
+  cout<<&stud<<endl;
+  char *p = &stud.name;
+  cout<<p<<endl;
+  return 0;
+
+}

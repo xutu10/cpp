@@ -1,0 +1,23 @@
+#include<iostream>
+using namespace std;
+
+class Parent{
+public:
+	Parent(){
+		cout<<"parent"<<end;
+	}
+	~Parent(){
+		cout<<"deconstructor parent"<<endl;
+	}
+	int a_;
+};
+
+class Child : public Parent{
+public:
+	Child(){
+		cout<<"child"<<endl;
+	}
+	~Child(){
+		cout<<"deconstructor child"<<endl;
+	}
+}

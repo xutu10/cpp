@@ -1,0 +1,21 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+struct Link{
+	int data;
+	struct Link* next;
+};
+
+struct Stack{
+	struct Link* head;
+	int size;	
+};
+
+void StackInit(struct Stack* stk){
+	stk->head = NULL;
+	stk->size = 0;
+}
+
+void StackPush(struct Stack* stk,const int data){
+	
+}

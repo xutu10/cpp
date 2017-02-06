@@ -1,0 +1,9 @@
+#pragma once
+
+class StaticMember{
+public:
+	StaticMember();
+	~StaticMember();
+
+	static int objCounter;  //just declaration, not initialized yet
+};

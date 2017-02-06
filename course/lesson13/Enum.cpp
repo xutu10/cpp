@@ -1,0 +1,46 @@
+#include <iostream>
+using namespace std;
+
+class Object{
+public:
+	enum E_TYPE
+	{
+		TYPE_A = 66,
+		TYPE_B = 88
+		
+	};//!!!
+public:	
+	Object(int n=0): num(n), var(num), refnum(num)
+	{
+		//here is just assignment not initialize
+		// var =10; Error, 
+		// refnum = num;
+		cout<<"Object con  "<<num<<endl;
+		
+	}
+	~Object(){
+		cout<<"Object de "<<num<<endl;
+	}
+	void display(){
+		cout<<var<<endl;
+	}
+private:
+	int num;
+	const int var;
+	int& refnum;
+};
+
+int main(int argc, char *argv[])
+{
+    Object obj(10);
+	Object obj2(20);
+	obj.display(); 
+	obj2.display();
+	//output: 10, 20
+	
+	// the effect scope of enum is the whole Class
+	//in comparison the scope of enum is just a object
+	cout<<Object::TYPE_A<<" "<<Object::TYPE_B<<endl;
+	cout<<obj.TYPE_A<<endl;
+    return 0;
+}

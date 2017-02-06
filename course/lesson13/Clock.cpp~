@@ -1,0 +1,23 @@
+#include"Clock.h"
+#include<iostream>
+using namespace std;
+
+Clock::Clock(int h,int m,int s){
+	second = s;
+	minute = m;
+	hour = h;
+}
+
+Clock::~Clock(){
+	cout<<"destory"<<endl;
+}
+
+void Clock::display(){
+
+	cout<<hour<<","<<minute<<","<<second<<endl;
+	
+}
+
+void Clock::update(){
+	second++;
+}

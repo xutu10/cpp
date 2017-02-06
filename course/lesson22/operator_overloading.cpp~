@@ -1,0 +1,13 @@
+#include"operator.h"
+
+Complex::Complex(int r, int i): real_(r),imag_(i){
+	
+}
+
+Complex::Complex(){
+	
+}
+
+Complex::~Complex(){
+	
+}

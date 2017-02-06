@@ -1,0 +1,37 @@
+#include"plusplus.h"
+#include<iostream>
+using namespace std;
+
+Integer::Integer(int a): n_(a){
+	
+}
+
+Integer::~Integer(){
+	
+}
+
+Integer& Integer::operator++(){
+	++n_;
+	return *this;
+}
+
+Integer operator++(Integer& i){
+	int n = ++i.n_;
+	return Integer(n);
+}
+
+Integer& operator++(Integer& i){
+	++i.n_;
+	return i;
+}
+
+Integer operator++(int i){
+//	n_++;       doesn't work
+	Integer tmp(n_);
+	n_++;
+	return tmp;
+}
+
+void Integer::display() const{
+	cout<<n_<<endl;
+}

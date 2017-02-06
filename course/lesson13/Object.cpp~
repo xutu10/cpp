@@ -1,0 +1,33 @@
+#include <iostream>
+using namespace std;
+
+class Object{
+public:
+	Object(){
+		cout<<"Object con"<<endl;
+	}
+
+	~Object(){
+		cout<<"Object de"<<endl;
+	}
+private:
+	int num;	
+};
+
+class Container{
+public:
+	Container(){
+		cout<<"Conatainer con"<<endl;
+	}
+	~Container(){
+		cout<<"Conatainer de"<<endl;
+	}
+private:
+	Object obj;
+};
+
+int main(int argc, char *argv[])
+{
+    Container c;
+    return 0;
+}

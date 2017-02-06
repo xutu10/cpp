@@ -1,0 +1,19 @@
+#include<iostream>
+using namespace std;
+
+class Outer{
+
+	class Inner{
+		public:
+		void fun(){
+			cout<<"inner fun"<<endl;
+		}		
+	}
+public:
+	Inner obj;
+	void fun(){
+		cout<<"outer fun"<<endl;
+		obj.fun();
+	}
+	
+};

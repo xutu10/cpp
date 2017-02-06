@@ -1,0 +1,19 @@
+#include<iostream>
+using namespace std;
+
+class Empty{
+public:
+	Empty* operator&(){
+		return this;		
+	}
+	
+};
+
+int main(int argc, char *argv[])
+{
+    Empty e;
+	Empty* p = &e;
+	cout<<p<<endl;
+	
+    return 0;
+}

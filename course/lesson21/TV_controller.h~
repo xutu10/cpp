@@ -1,0 +1,6 @@
+#pragma
+
+class TV_controller{
+public:
+	void Volum_up(TV& tv);	
+};

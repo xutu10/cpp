@@ -1,0 +1,15 @@
+#include<iostream>
+#include<string>
+using namespacde std;
+
+int main(int argc, char *argv[])
+{
+    string s;
+	string s1("asd");
+	cout<<s1<<endl;
+
+	string s2("asdfgh",2);
+	cout<<s2<<endl;
+
+    return 0;
+}

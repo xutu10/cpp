@@ -1,0 +1,14 @@
+#include"plusplus.h"
+//#include<iostream>
+//using namespace std;
+
+int main(int argc, char *argv[])
+{
+    Integer n(6);
+	n.display();
+	Integer n2 = ++n;
+	n.display();
+	n2.display();
+	
+    return 0;
+}

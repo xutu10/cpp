@@ -1,0 +1,8 @@
+#include"animal.h"
+
+class Fish:public Animal{
+    public:
+	Fish();
+	void breathe();
+
+};

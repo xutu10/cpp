@@ -1,0 +1,12 @@
+#include<iostream>
+using namespace std;
+
+int main(void){
+
+  int a = 12;
+  int& b = a;
+  b = 15; // just assign a again
+  int c =20;
+  b = c;  // not quotation of c, just change a
+
+}

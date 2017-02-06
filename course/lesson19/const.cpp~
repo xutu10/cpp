@@ -1,0 +1,21 @@
+#include<iostream>
+using namespace std;
+
+class Test{
+public:
+	Test(int x): x_(x){
+		
+	}
+	int get_x() const{
+		return x_;
+	}
+private:
+	int x_;
+	
+};
+
+int main(int argc, char *argv[])
+{
+    
+    return 0;
+}

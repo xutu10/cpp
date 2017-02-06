@@ -1,0 +1,16 @@
+#pragma once
+
+class String{
+public:
+	String(const char* str);// move constctor
+	String(const String& other);
+	String& operator=(const String& ohter);
+	String operator+=(const String& s);
+	void display();
+	friend String operator+(const String& s1,const String& s2);
+	~String();
+//	friend String opeartor+(const String& a,const String& b);
+	
+private:
+	char* str_;	
+};

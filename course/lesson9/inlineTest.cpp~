@@ -1,0 +1,20 @@
+#include "inline.h"
+#include <iostream>
+using namespace std;
+
+int main(int argc, char *argv[])
+{
+    Inline in;
+	cout<<in.add(3, int 5)<<endl;
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+

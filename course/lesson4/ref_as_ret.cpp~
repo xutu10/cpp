@@ -1,0 +1,16 @@
+#include<iostream>
+using namespace std;
+
+int a[] = {0,1,2,3};
+
+int& index(int i){
+	return a[i];
+}
+
+int main(int argc, char *argv[])
+{
+	index(3) = 100;
+	cout<<a[3]<<endl;
+	
+    return 0;
+}

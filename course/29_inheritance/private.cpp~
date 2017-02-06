@@ -1,0 +1,28 @@
+#include<iostream>
+using namespace std;
+
+class Parent{
+public:
+	void show(){
+		val_ = 2;
+		cout<<val_<<endl;
+	}
+	int val_;
+};
+
+class Child : private Parent{
+public:
+	// void show(int a){
+	// 	val_ = 2;
+	// 	cout<<val_+a<<endl;
+	// }	
+};
+
+int main(int argc, char *argv[])
+{
+    Child c;
+//	int a = 4;
+//	c.show(a);
+	c.show();
+    return 0;
+}

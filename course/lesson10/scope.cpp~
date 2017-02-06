@@ -1,0 +1,14 @@
+#include<iostream>
+using namespace std;
+int num = 10;
+
+int main(int argc, char *argv[])
+{
+    int num = 20;
+	{
+		int num =30;
+	}
+	cout<<num<<endl;
+	cout<<::num<<endl;
+    return 0;
+}
