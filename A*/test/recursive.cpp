@@ -92,7 +92,7 @@ int expand(vector<int>  status){
 		// sum the cost for this alternative
 		for(int j = 0; j<9;j++)
 			tem_cost += cost[j][tem[j]]; 
-			//pack the altertive position and its cost in set
+		//pack the altertive position and its cost in set
 		// automatic sorted by key, key is the cost, value is position
 		pair<int,int> tem_set = make_pair(tem_cost,alter[i]);
 		alter_cost.insert(tem_set);
