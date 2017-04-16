@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 	//output: 10, 20
 	
 	// the effect scope of enum is the whole Class
-	//in comparison the scope of enum is just a object
+	//in comparison the scope of num is just a object
 	cout<<Object::TYPE_A<<" "<<Object::TYPE_B<<endl;
 	cout<<obj.TYPE_A<<endl;
     return 0;

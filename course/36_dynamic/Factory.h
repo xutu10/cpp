@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _FACTORY_H
+#define _FACTORY_H
+
 #include<map>
 #include<string>
 using namespace std;
@@ -24,7 +26,7 @@ private:
 	static map<string,CREATE> map_;
 };
 
-map<string,CREATE> Factory::map_;
+__attribute((weak))map<string,CREATE> Factory::map_;
 
 class Register{
 public:
@@ -32,6 +34,7 @@ public:
 		Factory::Register(name,fun);
 	}
 };
+// creating a object will automatic call the constructor to call the func list( Register func) 
 
 #define REGISTER_CLASS(class_name) \
 class class_name##Register{ \
@@ -40,7 +43,11 @@ public: \
 		return new class_name;	 \
 	} \
 private: \
-static Register reg_; \
-}; \
+	static Register reg_; \
+};\
+ Register class_name##Register::reg_(#class_name,class_name##Register::new_instance); \
 
-Register class_name##Register::reg_(#class_name,class_name##Register::new_instance);
+// belongs to macro, or with end symbol \ is ok too.
+// usage of # is to invert class_name to string. it can be used only in macro.
+
+#endif //_Factory_H

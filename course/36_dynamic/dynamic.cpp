@@ -1,4 +1,5 @@
 #include"Shape.h"
+#include "Factory.h"
 #include<iostream>
 #include<vector>
 #include<string>
@@ -21,6 +22,18 @@ void delete_all_shapes(const vector<Shape*>& v){
 int main(int argc, char *argv[])
 {
     vector<Shape*> v;
+
+	Shape* ps;
+	ps = (Shape*)Factory::create_obj("circle");
+	v.push_back(ps);
+	ps = (Shape*)Factory::create_obj("square");
+	v.push_back(ps);
+	ps = (Shape*)Factory::create_obj("triangle");
+	v.push_back(ps);
+
+	draw_all_shapes(v);
+	delete_all_shapes(v);
+
 	
     return 0;
 }

@@ -49,6 +49,7 @@ int main(int argc, char *argv[])
 	// p->fun1();
 	// p->fun2();
 	// p->fun3();
+	// output: child fun1, child fun2, parent_fun3
 
 	Parent*	p;
 	Child c;
@@ -58,7 +59,7 @@ int main(int argc, char *argv[])
 	
 	delete p;            // if desconstructor without virtual
 	                     // just call the desconstructor of Parent
-	                     // then lead to memory leak of Child
+	                     // then maybe lead to memory leak of Child
 	
     return 0;
 }
