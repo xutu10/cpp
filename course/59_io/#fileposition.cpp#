@@ -1,0 +1,9 @@
+#include<iostream>
+#include<fstream>
+#include<cassert>
+using namespace std;
+
+int main(int argc, char** arg){
+	
+	return 0;
+}
