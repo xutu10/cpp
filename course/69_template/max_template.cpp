@@ -7,7 +7,7 @@ using namespace std;
 
 class Test{
 public:
-	// ??? without friend only one parameter is allowed
+	// ??? without friend only one parameter is not allowed
 	friend bool operator<(const Test& t1,const Test& other){
 		return true;
 	}
