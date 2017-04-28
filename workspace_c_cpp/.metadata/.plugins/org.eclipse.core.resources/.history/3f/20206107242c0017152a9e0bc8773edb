@@ -1,0 +1,24 @@
+/*
+ * Car.cpp
+ *
+ *  Created on: Apr 28, 2017
+ *      Author: xutu
+ */
+
+#include "Car.h"
+#include <iostream>
+using namespace std;
+
+Car::Car(Manufacturer manufacturer): manufacturer_(manufacturer) {
+	// TODO Auto-generated constructor stub
+	mileage_ = 0;
+}
+
+Car::~Car() {
+	// TODO Auto-generated destructor stub
+}
+
+void Car::print(){
+	cout<<"i am a car"<<endl;
+}
+
