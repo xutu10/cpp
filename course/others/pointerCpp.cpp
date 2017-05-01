@@ -11,7 +11,7 @@ int main(){
 	str = new string;
 	strcpy(name,"xutu");
 	*str = "it's good";
-
+	
 	cout<<"name "<<name<<endl;
 	cout<<"*name "<<*name<<endl;
 	cout<<"name[1]"<<name[1]<<endl;
@@ -21,5 +21,11 @@ int main(){
 	delete str;
 	delete [] name;
 
+	// memory leak
+	// int* p = new int;  
+	// *p = 43;
+	// p = new int;   
+	// *p = 23;   
+	
 	return 0;
 }
