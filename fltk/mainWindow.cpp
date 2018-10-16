@@ -6,7 +6,7 @@ using namespace std;
 mainWindow::mainWindow(int w,int h,const char* t): Fl_Window(w,h){
 
 	this->_initMenuBar();
-//	this->_initStatusBar();	
+	this->_initStatusBar();	
 }
 
 mainWindow::~mainWindow(){
@@ -31,4 +31,16 @@ void mainWindow::_initMenuBar(){
 	this->_menuBar->copy(_menuItems);
 	this->add(this->_menuBar);
 	
-};
+}
+
+void mainWindow::_initStatusBar(){
+
+	this->_statusBox = new Fl_Box(FL_EMBOSSED_BOX,10,(30+18),32,32,nullptr);
+	this->_mines = new Fl_Box(FL_BORDER_BOX,200,(30+18),48,32,"Mines");
+	this->_timer = new Fl_Box(FL_BORDER_BOX,100,(30+18),48,32,"Timer");
+
+	this->add(this->_statusBox);
+	this->add(this->_mines);
+	this->add(this->_timer);
+	
+}
