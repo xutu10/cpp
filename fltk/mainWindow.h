@@ -13,9 +13,14 @@ class mainWindow : public Fl_Window{
 	~mainWindow();
 
  private:
+	friend void about_cb(Fl_Widget*, void*);
+	friend void timer_cb(void*);
+
+ private:
 	void _initMenuBar();
 	void _initStatusBar();
-
+	void _aboutDialog();
+	
  private:
 	Fl_Menu_Bar* _menuBar;
 	Fl_Box* _statusBox;
