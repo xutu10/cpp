@@ -9,11 +9,11 @@ void quit_cb(Fl_Widget*, void* ctx){
 	exit(0);
 }
 
-// void menu_new_game_cb(Fl_Widget*, void* ctx){
-// 	mainWindow* m = static_cast<mainWindow *>(ctx);
+void menu_new_game_cb(Fl_Widget*, void* ctx){
+	mainWindow* m = static_cast<mainWindow *>(ctx);
 
-// 	m->_newGameCb();
-//}
+	m->_newGameCb();
+}
 
 
 // void show_high_scores_cb(Fl_Widget*, void* ctx){
@@ -51,7 +51,7 @@ void mainWindow::_initMenuBar(){
 
 	static const Fl_Menu_Item _menuItems[] = {
 		{ "Game", 0, 0, 0, FL_SUBMENU},
-		{ "new game", 0,0,0},
+		{ "new game", 0,(Fl_Callback*) menu_new_game_cb,this},
 		{ "high score", 0,0,0},
 		{ "exit" , 0,0,0},
 		{0},
@@ -87,3 +87,11 @@ void mainWindow::_aboutDialog(){
 	
 }
 
+void mainWindow::_newGameCb(){
+    this->_newgame = new newGameDialog();
+
+	this->_newgame->show();
+	while(this->_newgame->shown()){
+		Fl::wait();
+	}
+}

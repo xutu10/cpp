@@ -2,6 +2,7 @@
 #include<FL/Fl_Window.H>
 #include<FL/Fl_Button.H>
 #include<FL/Fl_Radio_Round_Button.H>
+#include<FL/Fl_Spinner.H>
 #include<iostream>
 using namespace std;
 
@@ -20,16 +21,32 @@ int main(int argc, char** argv){
 	newButton->label("new game");
 	newButton->callback(newgame_cb);
 	
-	Fl_Button* cancelButton = new Fl_Button(150, 220, 50, 25);
+	Fl_Button* cancelButton = new Fl_Button(150, 220, 60, 25);
 	cancelButton->label("cancel");
 	cancelButton->callback(cancelgame_cb);
 
-	Fl_Radio_Round_Button* radioBeginner = new Fl_Radio_Round_Button(50, 100, 20, 150,"Beginner");
+	Fl_Radio_Round_Button* radioBeginner = new Fl_Radio_Round_Button(30, 30, 20, 150,"Beginner");
 	//radioBeginner->setonly();
 	
 	//window->add(newButton);
 	//window->add(cancelButton);
 
+	Fl_Spinner* custH = new Fl_Spinner(200, 50, 50, 30);
+	custH->minimum(1);
+	custH->maximum(99);
+	
+	Fl_Spinner* custW = new Fl_Spinner(200, 85, 50, 30);
+	custW->minimum(1);
+	custW->maximum(99);
+	
+	Fl_Spinner* custMines = new Fl_Spinner(200, 115, 50, 30);
+	custMines->minimum(1);
+	custMines->maximum(99);
+
+	// custH->deactivate();
+	// custW->deactivate();
+	// custMines->deactivate();
+	
 	window->end();
 	window->show();
 
