@@ -2,6 +2,7 @@
 #define NEWGAMEDIALOG_H
 
 #include <FL/Fl_Window.H>
+#include<FL/Fl_Radio_Round_Button.H>
 
 class newGameDialog: public Fl_Window{
 
@@ -20,6 +21,11 @@ newGameDialog();
 private:
  int _boardW, _boardH, _mines; 
  Diffculty _diff = Beginner;
+
+ Fl_Radio_Round_Button* _radioBeginner;
+ Fl_Radio_Round_Button* _radioIntermediate;
+ Fl_Radio_Round_Button* _radioExpert;
+
  
 protected:
  int getBoardW() const{
@@ -41,7 +47,7 @@ protected:
 private:
  friend void newgame_cb(Fl_Widget*, void*);
  friend void cancel_cb(Fl_Widget*, void*);
-
+ friend void radio_cb(Fl_Widget*, void*);
 /* private: */
 /* Fl_Radio_Round_Button* _radBeginner; */
 

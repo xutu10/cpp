@@ -1,5 +1,4 @@
 #include "newGameDialog.h"
-#include<FL/Fl_Radio_Round_Button.H>
 #include<FL/Fl_Spinner.H>
 #include<FL/Fl_Button.H>
 #include<FL/Fl_Group.H>
@@ -24,6 +23,22 @@ void newgame_cb(Fl_Widget*, void* ctx){
 		// newgame->hide(); ???
 }
 
+void radio_cb(Fl_Widget*, void* ctx){
+	newGameDialog* ngd = static_cast<newGameDialog*>(ctx);
+		
+	if(ngd->_radioBeginner->value() == 1){
+		ngd->_diff = newGameDialog::Beginner;
+	}else if (ngd->_radioIntermediate->value() == 1){
+		ngd->_diff = newGameDialog::Intermediate;
+	}else if (ngd->_radioExpert->value() == 1){
+		ngd->_diff = newGameDialog::Expert;
+	}
+
+	ngd->_boardH = diffData[ngd->_diff][0];
+	ngd->_boardW = diffData[ngd->_diff][1];
+	ngd->_mines = diffData[ngd->_diff][2];
+}
+
 newGameDialog::newGameDialog() : Fl_Window(300,300,"new game"){
 
 	Fl_Button* newButton = new Fl_Button(20, 220, 100, 25);
@@ -34,10 +49,10 @@ newGameDialog::newGameDialog() : Fl_Window(300,300,"new game"){
 	cancelButton->label("cancel");
 	cancelButton->callback(cancel_cb);
 
-	Fl_Radio_Round_Button* radioBeginner = new Fl_Radio_Round_Button(30, 30, 20, 150,"Beginner");
-	Fl_Radio_Round_Button* radioIntermediate = new Fl_Radio_Round_Button(30, 55, 20, 150,"Intermediate");
-	Fl_Radio_Round_Button* radioExpert = new Fl_Radio_Round_Button(30, 80, 20, 150,"Expert");
-	radioBeginner->setonly();
+	this->_radioBeginner = new Fl_Radio_Round_Button(30, 30, 20, 150,"Beginner");
+	this->_radioIntermediate = new Fl_Radio_Round_Button(30, 55, 20, 150,"Intermediate");
+	this->_radioExpert = new Fl_Radio_Round_Button(30, 80, 20, 150,"Expert");
+	this->_radioBeginner->setonly();
 	
 	//window->add(newButton);
 	//window->add(cancelButton);
