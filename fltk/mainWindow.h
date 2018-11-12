@@ -23,6 +23,12 @@ class mainWindow : public Fl_Window{
 	void _initStatusBar();
 	void _aboutDialog();
 	void _newGameCb();
+	void _resetGame();
+	void _setupBoardSize(int w,int h);
+	void _reshapeMainwindow(int w, int h);
+	void _updateGameStatus();
+	void _gameWon();
+	void _gameOver();
 	
  private:
 	Fl_Menu_Bar* _menuBar;

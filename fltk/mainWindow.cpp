@@ -1,7 +1,7 @@
 #include "mainWindow.h"
 #include <FL/Fl_Menu_Item.H>
 #include<FL/fl_ask.H>
-
+#include<iostream>
 using namespace std;
 
 
@@ -94,4 +94,65 @@ void mainWindow::_newGameCb(){
 	while(this->_newgame->shown()){
 		Fl::wait();
 	}
+
+	int w = this->_newgame->getBoardW();
+	int h = this->_newgame->getBoardH();
+	
+	this->_setupBoardSize(w,h);
+}
+
+void mainWindow::_resetGame(){
+
+	Fl::remove_timeout(timer_cb,this);
+	//_board->deactivate();
+	
+}
+
+void mainWindow::_setupBoardSize(int w, int h){
+
+	//if(this->_board) delete this->_board;
+
+    this->_reshapeMainwindow(w,h);
+	this->_menuBar->size(w, 30);
+
+	int boardY = 30;
+	//this->_board = new GameBoard(10, boardY,w,h,this);
+
+	Fl::repeat_timeout(1.0,timer_cb,this);
+	
+}
+
+void mainWindow::_reshapeMainwindow(int w, int h){
+	int newW,newH; 
+	this->size(newW,newH);
+
+	// TODO reshape statusbox, image and timer
+}
+
+void mainWindow::_updateGameStatus(){
+	
+	
+}
+
+void mainWindow::_gameOver(){
+	cout<<"game over "<<endl;
+
+	// TODO set image
+	this->_resetGame();
+	this->_updateGameStatus();
+
+	Fl::wait(); //???
+	fl_beep();
+
+	fl_message_title("game over!!!");
+	fl_message("you lost");
+   
+}
+
+void mainWindow::_gameWon(){
+	// TODO set image
+	this->_resetGame();
+	this->_updateGameStatus();
+
+	
 }
