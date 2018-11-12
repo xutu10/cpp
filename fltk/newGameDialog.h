@@ -11,6 +11,13 @@ public:
 newGameDialog();
 ~newGameDialog();
 
+  enum Diffculty{
+	 Beginner = 0,
+ 	 Intermediate = 1,
+	 Expert = 2,
+	 Custom = 3
+ };
+ 
  int getBoardW() const{
     return this->_boardW;
  }
@@ -26,14 +33,6 @@ newGameDialog();
  Diffculty getDiffculty() const{
 	 return this->_diff;
  }
- 
-  enum Diffculty{
-	 Beginner = 0,
- 	 Intermediate = 1,
-	 Expert = 2,
-	 Custom = 3
- };
-
  
 private:
  int _boardW, _boardH, _mines; 
