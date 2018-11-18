@@ -28,7 +28,7 @@ class GameBoard : public Fl_Box{
  private:
   void initGame(int);
   void calAroundMines();
-  int checkAroundCells(int, int);
+  void checkAndUncoverAroundCells(int, int);
   
   int grid_width_, grid_height_, remain_mines_, remain_cells_, remain_flag_;
   std::vector<std::vector<cellstatus>> cells_;	

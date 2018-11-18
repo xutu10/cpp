@@ -8,10 +8,11 @@
 
 class GameBoard: public Fl_Box{
 public:
-	GameBoard(int x, int y, int w, int h, const char* L=0): Fl_Box(x, y, w, h,L){
-		x_=x;
+	GameBoard(int a, int y, int wd, int h, const char* L=0): Fl_Box(a, y, wd, h,L){
+		x_=a;
 		y_=y;
-	
+		// call the member of base class with bracket
+		std::cout<<this->w()<<","<<this->x()<<std::endl;
 		img = new Fl_PNG_Image("flower.png");
 	
 	}
@@ -33,8 +34,7 @@ int main(int argc, char** argv){
 	GameBoard* box = new GameBoard(10,10, 250,250,"my box");
 	
 	//	Fl_Box::draw();
-	std::cout<<"1"<<std::endl;
-
+	
 	//	fl_draw_box(FL_UP_BOX, x, y, 16, 16, FL_GRAY);
 
 	// for (int i =0; i<10;i++){

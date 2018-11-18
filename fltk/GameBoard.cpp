@@ -21,10 +21,10 @@ static const Fl_Color count_colors[] = {
 GameBoard::GameBoard(int x, int y, int w, int h):Fl_Box(FL_NO_BOX, x, y,(w*CELL_SIZE), (h*CELL_SIZE),nullptr){
 	grid_width_ = w;
 	grid_height_ = h;
-	remain_cells_ = w*h;
 	// TODO
 	int mines_num = 0;
-	
+	remain_cells_ = w*h - mines_num;
+	// TODO end
 	cells_.clear();
 	
 	for (int i = 0; i<w;i++){
@@ -60,7 +60,6 @@ void GameBoard::initGame(int mines){
 			mines_placed++;
 		}
 	}	
-	
 	calAroundMines();
 }
 
@@ -88,8 +87,8 @@ void GameBoard::calAroundMines(){
 				around_mines_num++;
 			
 			cells_[i][j].aroundmines = around_mines_num;
+		}
 	}
-  }
 }
 
 //???Fl_Box::draw();
@@ -141,7 +140,8 @@ void GameBoard::draw(){
 }	
 
 int GameBoard::handle(int event){
-	
+	int x, y;
+	// if event beginning 
 	if (event == FL_PUSH){
 		// check if out of the gameborder
 		if(Fl::event_x() < this->x() || Fl::event_x() > this->x() + grid_width_ * CELL_SIZE ||
@@ -149,44 +149,103 @@ int GameBoard::handle(int event){
 			return 0;
 			
 		return 1;
-	}
-	
-	else if(event == FL_RELEASE){
-		int x = Fl::event_x();
-		int y = Fl::event_y();
+		
+	}else if(event == FL_RELEASE){
+		x = Fl::event_x();
+		y = Fl::event_y();
 		// check if out of the gameborder
 		if(x < this->x() || x > this->x() + grid_width_ * CELL_SIZE ||
 		   y < this->y() || y > this->y() + grid_height_ * CELL_SIZE )
+			
 			return 0;
-		
-		
+
+		// if event end
+	
 		x = (x - this->x())/CELL_SIZE;
 		y = (y - this->y())/CELL_SIZE;
-			
-		if (Fl::event_button() == FL_LEFT_MOUSE && cells_[x][y].is_uncovered == true){
+   
+		// if event_button left mouse	
+		if (Fl::event_button() == FL_LEFT_MOUSE && cells_[x][y].is_uncovered == false){
 			if (cells_[x][y].is_mine == true){
 				// TODO gameover
-			}				
-			else{
-				cells_[x][y].is_uncovered = false;
+			}else{
+				cells_[x][y].is_uncovered = true;
+				remain_cells_--;
 				//	checkAroundCells(x,y);
 			}
-		}else {
-			return 0;
 		}
-		
-		if (Fl::event_button() == FL_RIGHT_MOUSE && cells_[x][y].is_uncovered == true ){
+		//else if event_button right mouse
+		else if (Fl::event_button() == FL_RIGHT_MOUSE && cells_[x][y].is_uncovered == true && cells_[x][y].is_flagged == false ){
 			cells_[x][y].is_flagged == true;
 			remain_flag_--;
+		
 			if (cells_[x][y].is_mine == true){
 				remain_mines_--;
 			}
-			return 1;	
 		}
-	else {
+		// else if event_button right mouse
+		else if (Fl::event_button() == FL_RIGHT_MOUSE && cells_[x][y].is_flagged == true){
+			cells_[x][y].is_flagged == false;
+			remain_flag_++;
+			
+			if (cells_[x][y].is_mine == true){
+				remain_mines_++;
+			}		
+		}
+
+		// TODO
+		// this-> checkgamestatus();
+		// this-> updategamestatus();
+		return 1;
+	}else{
 		return Fl_Box::handle(event); // ???
 	}
-  }	
 }
 
- 
+void GameBoard::checkAndUncoverAroundCells(int i, int j){
+	
+	if (cells_[i][j].aroundmines == 0){
+		if (i-1 >= 0 && j-1 >= 0 && cells_[i-1][j-1].is_flagged != true){
+				cells_[i-1][j-1].is_uncovered = true;
+				remain_cells_--;
+				checkAndUncoverAroundCells(i-1, j-1);
+		}
+		if (j-1 >= 0 && cells_[i][j-1].is_flagged != true){
+				cells_[i][j-1].is_uncovered =true;
+				remain_cells_--;
+				checkAndUncoverAroundCells(i,j-1);
+		}
+		if (i+1 < grid_width_ && j-1>=0 && cells_[i+1][j-1].is_flagged != true){
+				cells_[i+1][j-1].is_uncovered =true;
+				remain_cells_--;
+				checkAndUncoverAroundCells(i+1,j-1);
+		}
+		if (i-1 >= 0 && cells_[i-1][j].is_flagged != true){
+				cells_[i-1][j].is_uncovered =true;
+				remain_cells_--;
+				checkAndUncoverAroundCells(i-1,j);
+		}
+		if (i+1 < grid_width_ && cells_[i+1][j].is_flagged != true){
+				cells_[i+1][j].is_uncovered =true;
+				remain_cells_--;
+				checkAndUncoverAroundCells(i+1,j);
+		}
+		if (i-1 >= 0 && j+1 < grid_height_ && cells_[i-1][j+1].is_flagged != true){
+				cells_[i-1][j+1].is_uncovered =true;
+				remain_cells_--;
+				checkAndUncoverAroundCells(i-1,j+1);
+		}
+		if (j+1 < grid_height_ && cells_[i][j+1].is_flagged != true){
+				cells_[i][j+1].is_uncovered =true;
+				remain_cells_--;
+				checkAndUncoverAroundCells(i,j+1);
+		}
+		if (i+1 < grid_width_ && j+1 < grid_height_ && cells_[i+1][j+1].is_flagged != true){
+				cells_[i+1][j+1].is_uncovered =true;
+				remain_cells_--;
+				checkAndUncoverAroundCells(i+1,j+1);
+		}
+		
+		this->redraw();
+	}			
+}
