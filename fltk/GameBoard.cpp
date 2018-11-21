@@ -21,10 +21,11 @@ static const Fl_Color count_colors[] = {
 GameBoard::GameBoard(int x, int y, int w, int h):Fl_Box(FL_NO_BOX, x, y,(w*CELL_SIZE), (h*CELL_SIZE),nullptr){
 	grid_width_ = w;
 	grid_height_ = h;
-	// TODO
 	int mines_num = 0;
-	remain_cells_ = w*h - mines_num;
-	// TODO end
+	// TODO mines_num
+	int game_status_ = 0;
+	//remain_cells_ = w * h - mines_num;
+	// TODO mines_num end
 	cells_.clear();
 	
 	for (int i = 0; i<w;i++){
@@ -33,10 +34,14 @@ GameBoard::GameBoard(int x, int y, int w, int h):Fl_Box(FL_NO_BOX, x, y,(w*CELL_
 		for (int j = 0; j<h;j++){
 			cells_[i].push_back(cellstatus());
 		}
-		
 	}
 	
 	this->initGame(mines_num);
+	// TODO image
+	imgMine_ = new Fl_PNG_Image("images/mine.png");
+    imgMineCrossed_ = new Fl_PNG_Image("images/mine_crossed.png");
+	imgFlag_ = new Fl_PNG_Image("images/flag.png");
+	// TODO image end
 	start_time_ = time(nullptr);
 	
 }
@@ -49,13 +54,15 @@ void GameBoard::initGame(int mines){
 	
 	int mines_placed = 0;
 	int x,y;
-	remain_mines_ = remain_flag_= mines; //????
-	
+	// in mainwindow the func will be called
+	// remain_mines_ = remain_flag_= mines;
 	while (mines_placed < mines){
 		x = rand() % grid_width_;
 		y = rand() % grid_height_;
 		
 		if(cells_[x][y].is_mine != true ){
+			// TODO set
+			//remain_mines_.insert(Point(x,y));
 			cells_[x][y].is_mine = true;
 			mines_placed++;
 		}
@@ -167,7 +174,7 @@ int GameBoard::handle(int event){
 		// if event_button left mouse	
 		if (Fl::event_button() == FL_LEFT_MOUSE && cells_[x][y].is_uncovered == false){
 			if (cells_[x][y].is_mine == true){
-				// TODO gameover
+				game_status_ = 3;
 			}else{
 				cells_[x][y].is_uncovered = true;
 				remain_cells_--;
@@ -180,7 +187,7 @@ int GameBoard::handle(int event){
 			remain_flag_--;
 		
 			if (cells_[x][y].is_mine == true){
-				remain_mines_--;
+				//TODO --remain_mines_;
 			}
 		}
 		// else if event_button right mouse
@@ -189,12 +196,12 @@ int GameBoard::handle(int event){
 			remain_flag_++;
 			
 			if (cells_[x][y].is_mine == true){
-				remain_mines_++;
+				// TODO remain_mines_;
 			}		
 		}
 
 		// TODO
-		// this-> checkgamestatus();
+		this-> checkGameStatus();
 		// this-> updategamestatus();
 		return 1;
 	}else{
@@ -248,4 +255,13 @@ void GameBoard::checkAndUncoverAroundCells(int i, int j){
 		
 		this->redraw();
 	}			
+}
+
+void GameBoard::checkGameStatus(){
+	// TODO reset game_status_ for each new game??
+	
+	if (remain_cells_ == 0)
+		game_status_ = 2;
+	if (remain_mines_.size() == 0)
+		game_status_ = 2;
 }
