@@ -6,10 +6,11 @@ struct Point{
 	Point(int x,int y) : x(x),y(y){}
 
 	int x, y;
-
+	// p is the current element in set, "this" is the coming element which to be placed
 	bool operator<(const Point& p) const{
 		if ((x+y) == (p.x + p.y)){
-			return true;      
+			return true;      // (0,1), (1,0)
+			// return false;  (1,0), (0,1)     
 			// return false; // no sum of any element is same 
 		}
 		return (x+y) < (p.x + p.y);
@@ -17,21 +18,17 @@ struct Point{
 	
 	bool operator==(const Point& p){ 
 		return (p.x == x) && (p.y == y);
-}
+	}
 
 };
 
 int main(){
 
-	std::set<Point> s;
+	std::multiset<Point> s;
 	//	create set
-	for(int i = 0; i < 3; i++){
-		for (int j = 0; j < 3; j++)
-			//	Point p = Point(i,j);
-			s.insert(Point(i,j));
-	}
-
-	std::cout<<s.size()<<std::endl;
+	
+	s.insert(Point(1,0));
+	s.insert(Point(0,1));
 	
 	std::set<Point> ::iterator it;
 

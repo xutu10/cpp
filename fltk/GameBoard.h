@@ -41,7 +41,7 @@ class GameBoard : public Fl_Box{
  
   virtual void draw();
   virtual int handle(int);
-  
+
   int getGameStatus() const {
 	  return game_status_;
   };
