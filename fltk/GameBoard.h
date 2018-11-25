@@ -16,6 +16,12 @@ struct Point{
 	int x, y;	
 };
 
+inline bool operator<(const Point& p1, const Point& p2){
+	if (p1.x == p2.x && p1.y == p2.y)
+		return false;
+	return (p1.x + p2.y < p2.x + p2.y);
+}
+
 inline bool operator==(const Point& p1, const Point& p2){ 
 	return (p1.x == p2.x) && (p1.y == p2.y);
 }
@@ -58,7 +64,7 @@ class GameBoard : public Fl_Box{
   
   int grid_width_, grid_height_, remain_cells_, remain_flag_;
   std::vector<std::vector<cellstatus>> cells_;	
-  std::set<Point> remain_mines_;
+  std::multiset<Point> remain_mines_;
   int game_status_;      // enum running 1, won 2, over 3???
   
   Fl_PNG_Image *imgMine_, *imgMineCrossed_, *imgFlag_;

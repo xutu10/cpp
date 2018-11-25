@@ -23,6 +23,7 @@ GameBoard::GameBoard(int x, int y, int w, int h):Fl_Box(FL_NO_BOX, x, y,(w*CELL_
 	grid_height_ = h;
 	int mines_num = 0;
 	// TODO mines_num
+	// mainwindow object is neccessary ???
 	int game_status_ = 0;
 	//remain_cells_ = w * h - mines_num;
 	// TODO mines_num end
@@ -51,20 +52,20 @@ GameBoard::~GameBoard(){
 }
 
 void GameBoard::initGame(int mines){
-	
+
+	remain_mines_.clear();
 	int mines_placed = 0;
-	int x,y;
+	int i,j;
 	// in mainwindow the func will be called
 	// remain_mines_ = remain_flag_= mines;
 	while (mines_placed < mines){
-		x = rand() % grid_width_;
-		y = rand() % grid_height_;
+		i = rand() % grid_width_;
+		j = rand() % grid_height_;
 		
-		if(cells_[x][y].is_mine != true ){
-			// TODO set
-			//remain_mines_.insert(Point(x,y));
-			cells_[x][y].is_mine = true;
+		if(cells_[i][j].is_mine != true ){
+			cells_[i][j].is_mine = true;
 			mines_placed++;
+			remain_mines_.insert(Point(i,j));
 		}
 	}	
 	calAroundMines();
@@ -148,6 +149,7 @@ void GameBoard::draw(){
 
 int GameBoard::handle(int event){
 	int x, y;
+	int i,j;
 	// if event beginning 
 	if (event == FL_PUSH){
 		// check if out of the gameborder
@@ -168,26 +170,32 @@ int GameBoard::handle(int event){
 
 		// if event end
 	
-		x = (x - this->x())/CELL_SIZE;
-		y = (y - this->y())/CELL_SIZE;
+		i = (x - this->x())/CELL_SIZE;
+		j = (y - this->y())/CELL_SIZE;
    
 		// if event_button left mouse	
-		if (Fl::event_button() == FL_LEFT_MOUSE && cells_[x][y].is_uncovered == false){
-			if (cells_[x][y].is_mine == true){
+		if (Fl::event_button() == FL_LEFT_MOUSE && cells_[i][j].is_uncovered == false){
+			if (cells_[i][j].is_mine == true){
 				game_status_ = 3;
 			}else{
-				cells_[x][y].is_uncovered = true;
+				cells_[i][j].is_uncovered = true;
 				remain_cells_--;
 				//	checkAroundCells(x,y);
 			}
 		}
 		//else if event_button right mouse
-		else if (Fl::event_button() == FL_RIGHT_MOUSE && cells_[x][y].is_uncovered == true && cells_[x][y].is_flagged == false ){
-			cells_[x][y].is_flagged == true;
+		else if (Fl::event_button() == FL_RIGHT_MOUSE && cells_[i][j].is_uncovered == true && cells_[i][j].is_flagged == false ){
+			cells_[i][j].is_flagged == true;
 			remain_flag_--;
 		
-			if (cells_[x][y].is_mine == true){
-				//TODO --remain_mines_;
+			if (cells_[i][j].is_mine == true){
+				Point temp_p = Point(x,y);
+				std::set<Point> :: iterator it;
+				it = remain_mines_.find(temp_p);
+				if(it != remain_mines_.end()){
+					it++;
+					remain_mines_.erase(it);
+				}
 			}
 		}
 		// else if event_button right mouse
