@@ -23,6 +23,6 @@ int main(){
 	// Application a; in this way can't create object
 	Application::GetInstance().run();
 	Application::GetInstance().run();
-		
+
 	return 0;
 }

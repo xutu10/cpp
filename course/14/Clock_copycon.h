@@ -9,7 +9,7 @@ public:
 	// there is default copyconstructor
 	// only one param is acceptable
 	Clock(const Clock& other);
-	void display();
+	void display() const;
 	void update();
 	~Clock();	
 };

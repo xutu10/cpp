@@ -17,7 +17,7 @@ Clock:: Clock(int h,int m,int s): hour(h),minute(m),second(s){
 
 Clock:: Clock(const Clock& other):second(other.second),minute(other.minute), hour(other.hour)
 {
-	cout<<"copy constructor"<<endl;
+	cout<<"copy constructor"<<","<<this<<endl;
 }
 
 
@@ -25,7 +25,7 @@ Clock::~Clock(){
 	cout<<"destory"<<endl;
 }
 
-void Clock::display(){
+void Clock::display() const{
 
 	cout<<hour<<","<<minute<<","<<second<<endl;
 	
