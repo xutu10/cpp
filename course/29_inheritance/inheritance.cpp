@@ -17,6 +17,7 @@ public:
 		y_ = 8;
 		//z_ = 10;   // not accessible
 	}
+
 	void show(){
 		cout<<x_<<endl;
 	}

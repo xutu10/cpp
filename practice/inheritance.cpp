@@ -60,10 +60,17 @@ int main(){
 	cout<<&d<<"\n"<<&d.a_<<"\n"<<&d.b_<<"\n"<<&d.c_<<"\n"<<&d.Base::a_<<endl;
 
 	// 3. Polymorphism
-	Base *bb = new Derived(4,5,6);
-	bb->increment();
+	Derived dd(4,5,6);
+	Base *bb = &dd;
+	cout<<"--------------"<<endl;
+	cout<<"size of bb: "<<sizeof(*bb)<<endl;;
+	bb->increment();  // from Derived
 	bb->show();
 	// bb->display();  Base doesn't have the member func
+	cout<<&dd<<","<<&dd.a_<<","<<&dd.b_<<","<<&dd.c_<<","<<&dd.Base::a_<<endl;
+	// Base doesn't have b_ and c_
+	// &(bb->b_)<<"\n"<<&(bb->c_)
+	cout<<bb<<","<<&(bb->a_)<<","<<&bb->Base::a_<<endl;
 	
 	
 	return 0;
