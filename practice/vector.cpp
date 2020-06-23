@@ -26,31 +26,33 @@ int main(){
 	vector<int> b = {1,4,8,9};
 	show(b);
 
+	// vector<int, string> a; not allowed, pair is ok
+	
 	// vector<int> c(5,6); 
 
 	//	int ints[] = {4,5,6,7};
 	//  vector<int> a(ints, ints+sizeof(ints)/sizeof(ints[0]));
 
 	// // c11, const_iterator
-	// increment(b);
-	// show(b);
-	// cout<<b.size()<<","<<b.capacity()<<endl;
+	increment(b);
+	show(b);
+	cout<<b.size()<<","<<b.capacity()<<endl;
 	// // 3. other funcs
-	// b.push_back(2);
-	// show(b);
-	// cout<<b.size()<<","<<b.capacity()<<endl;
-	// int add[]= {100,100	};
-	// auto it = b.begin();
-	// b.insert(it+1,add,add+2);
-	// show(b);
-	// cout<<b.size()<<","<<b.capacity()<<endl;
+	b.push_back(2);
+	show(b);
+	cout<<b.size()<<","<<b.capacity()<<endl;
+	int add[]= {100,100	};
+	auto it = b.begin();
+	b.insert(it+1,add,add+2);
+	show(b);
+	cout<<b.size()<<","<<b.capacity()<<endl;
 		
-	// b.pop_back();
-	// show(b);
+	b.pop_back();
+	show(b);
 
-	// cout<<b[3]<<endl;  // 4
-	// b.erase(it+1, it+3); // delete 100,100
-	// show(b);
+	cout<<b[3]<<endl;  // 4
+	b.erase(it+1, it+3); // delete 100,100
+	show(b);
 
 	// string
 	vector<string> s = {"aaa", "bbb","ccc"};	
