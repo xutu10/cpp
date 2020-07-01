@@ -26,7 +26,6 @@ int main(){
 	vector<int> b = {1,4,8,9};
 	show(b);
 
-	// vector<int, string> a; not allowed, pair is ok
 	
 	// vector<int> c(5,6); 
 
