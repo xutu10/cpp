@@ -21,7 +21,7 @@ public:
 
 	bool isSame( T& other){
 		bool flag;
-		
+
 		flag = this == &other;
 		// *this == other; doesn't work, syntax
 		printf("addess of this %p, address of other %p \n", this, &other);
@@ -39,11 +39,11 @@ public:
 int main(){
 
 	T t = 1;
-	// t and &t are address
+	// syntax: t and &t are address
 	printf("value of t %p, address of t %p \n", t, &t);
 
 	// the type of t2 is reference which has no allocation
-	// &t2 represents the address of t as well
+	//syntax: &t2 represents the address of t as well
 	T& t2 = t;
 	printf("value of t2 %p, address of t2 %p \n", t2, &t2);
 	T t3 = t;

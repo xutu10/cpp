@@ -5,7 +5,8 @@ using namespace std;
 
 template<typename T, typename U>
 decltype(auto) Plus(T&& t, U&& u){
-	return forward<T>(t) + forward<U>(u);
+	//	return forward<T>(t) + forward<U>(u);
+	return t + u;
 }
 
 class X{
@@ -32,7 +33,6 @@ private:
 
 
 int main(){
-
 
 	int a = 10;
 	int b = 20;
