@@ -4,6 +4,9 @@
 #include<vector>
 using namespace std;
 
+/**
+   auto_ptr is deprecated since c++11
+ */
 
 class X{
 
