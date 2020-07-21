@@ -9,17 +9,18 @@
    int (&b)[3] = a;
  */
 
-// template<typename T>
-// void for_each_ptr(T* arr){
+// T(a) is int[3],  arr = (*&)[], *arr = &[]
+template<typename T>
+void for_each_ptr(T* arr){
 
-// 	std::cout<<"template call with ptr"<<std::endl;
-// 	std::for_each(std::begin(*arr), std::end(*arr), [](int n){
-// 		std::cout<<n<<std::endl;
-// 	});
-// }
+	std::cout<<"template call with ptr"<<std::endl;
+	std::for_each(std::begin(*arr), std::end(*arr), [](int n){
+		std::cout<<n<<std::endl;
+	});
+}
 
 // a-> pointer, arr is int*
-// &a -> int(&)[3], arr is int(*&)[3]
+// &a -> int(*)[3], can not be converted to int*
 void for_each_ptr(int* arr){
 
 	std::cout<<"call with ptr"<<std::endl;
