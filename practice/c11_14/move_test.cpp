@@ -20,6 +20,15 @@ public:
 
 	}
 
+	// move constr
+	String(String&& other){
+		cout<<"moved"<<endl;
+		len_ = other.len_;
+		s_ = other.m_s;
+
+		other.len_ = 0;
+		other.s_ = nullptr;
+	}
 
 	void display(){
 		cout<<s_<<endl;
@@ -44,8 +53,8 @@ public:
 		cout<<"entity constructor"<<endl;
 	}
 
-	Entity(String&& s)
-		:name_(move(s))
+	// to call the move constr in String
+	Entity(String&& s):name_(move(s))
 	//	:name_((String&&) s) instead
 	{
 		cout<<"entity moved"<<endl;
