@@ -1,5 +1,6 @@
 #include<iostream>
 #include<algorithm>
+#include<vector>
 
 using namespace std;
 
@@ -15,6 +16,16 @@ int main(){
 		});
 
 	cout<<counter<<endl;
+	//##########################
+	cout<<"\nsort\n";
+	vector<int> int_v = {3,8,5,3,10	};
+	sort(begin(int_v), end(int_v), [](int a, int b){
+			return a == b;
+		});
+	// 3,3,8,5,10
+	for(auto &i : int_v)
+		cout<<i<<",";
+	cout<<endl;
 
 	return 0;
 }

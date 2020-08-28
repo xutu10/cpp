@@ -61,7 +61,7 @@ public:
 	
 	~String(){
 		cout<<"Distroyed"<<endl;
-		delete s_;
+		delete[] s_;
 	}
 
 	char* s_;
@@ -91,5 +91,6 @@ int main(){
 	// cout does work anymore??
 	printf("dest content %s\n",dest.s_);
 	printf("ptr to: %p, content: %s\n", ptr,ptr);
+
 	return 0;
 }
