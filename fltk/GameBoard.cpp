@@ -18,17 +18,18 @@ static const Fl_Color count_colors[] = {
 };
 
 
-GameBoard::GameBoard(int x, int y, int w, int h):Fl_Box(FL_NO_BOX, x, y,(w*CELL_SIZE), (h*CELL_SIZE),nullptr){
+GameBoard::GameBoard(int x, int y, int w, int h, int num):Fl_Box(FL_NO_BOX, x, y,(w*CELL_SIZE), (h*CELL_SIZE),nullptr){
+
+	BasePoint_ = new Point(x,y);
+	
 	grid_width_ = w;
 	grid_height_ = h;
-	int mines_num = 0;
-	// TODO mines_num
+	int mines_num = num;
 	// mainwindow object is neccessary ???
 	int game_status_ = 0;
-	//remain_cells_ = w * h - mines_num;
-	// TODO mines_num end
 	cells_.clear();
-	
+
+	// init cells, double array
 	for (int i = 0; i<w;i++){
 		cells_.push_back(std::vector<cellstatus>());
 		
@@ -38,13 +39,12 @@ GameBoard::GameBoard(int x, int y, int w, int h):Fl_Box(FL_NO_BOX, x, y,(w*CELL_
 	}
 	
 	this->initGame(mines_num);
-	// TODO image
+
 	imgMine_ = new Fl_PNG_Image("images/mine.png");
     imgMineCrossed_ = new Fl_PNG_Image("images/mine_crossed.png");
 	imgFlag_ = new Fl_PNG_Image("images/flag.png");
-	// TODO image end
+
 	start_time_ = time(nullptr);
-	
 }
 
 GameBoard::~GameBoard(){
@@ -107,8 +107,8 @@ void GameBoard::draw(){
 	
 	for (int i = 0; i < grid_width_;i++){
 		for (int j = 0; j < grid_height_; j++){
-			x = 120 + i * CELL_SIZE;
-			y = 30 + i * CELL_SIZE;
+			x = BasePoint_->x + i * CELL_SIZE;
+			y = BasePoint_->y + j * CELL_SIZE;
 			
 			cellstatus this_cell = cells_[i][j];
 			if (this_cell.is_uncovered == true){
@@ -120,7 +120,7 @@ void GameBoard::draw(){
 				// draw mine 
 				c = FL_RED;
 				fl_draw_box(FL_BORDER_BOX, x, y, CELL_SIZE, CELL_SIZE, c);
-				//img_flag.draw(x,y); TODO
+				imgMineCrossed_->draw(x,y);
 			}
 			
 			if (this_cell.is_uncovered == false && this_cell.is_mine == false){
@@ -130,7 +130,7 @@ void GameBoard::draw(){
 				}else {
 					std::stringstream s;
 					s<<this_cell.aroundmines;
-					fl_color(count_colors[this_cell.aroundmines-1]); // TODO
+					fl_color(count_colors[this_cell.aroundmines-1]); //??? TODO
 					fl_font(FL_COURIER | FL_BOLD, 16);
 					// TODO align to top??
 					fl_draw(s.str().c_str(), x+2, y - fl_descent() + fl_height());	
@@ -139,9 +139,7 @@ void GameBoard::draw(){
 			}
 			
 			if (this_cell.is_flagged == true){
-				// draw flag
-				// size of img ???
-				// img_flag.draw(x,y);
+				imgFlag_->draw(x,y);
  			}
 		}
 	}

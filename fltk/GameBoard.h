@@ -42,7 +42,7 @@ class GameBoard : public Fl_Box{
  friend class MainWindow;
 
  public:
-  GameBoard(int,int,int,int);
+ GameBoard(int,int,int,int,int);
   ~GameBoard();
  
   virtual void draw();
@@ -61,7 +61,8 @@ class GameBoard : public Fl_Box{
   void calAroundMines();
   void checkGameStatus();
   void checkAndUncoverAroundCells(int, int);
-  
+
+  Point* BasePoint_;
   int grid_width_, grid_height_, remain_cells_, remain_flag_;
   std::vector<std::vector<cellstatus>> cells_;	
   std::multiset<Point> remain_mines_;
