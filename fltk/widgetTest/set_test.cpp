@@ -1,6 +1,13 @@
 #include <iostream>
 #include <set>
 
+/*
+1. argument which is const as "this"" passed to the function, the function must be const
+
+2. auto it : s iterates by value
+ */
+
+
 struct Point{
 
 	Point(int x,int y) : x(x),y(y){}
@@ -14,8 +21,10 @@ struct Point{
 		}
 		return (x+y) < (p.x + p.y);
 	}
-	
-	bool operator==(const Point& p){ 
+
+	// Element which is stored in set as const
+	// *it as this is passed to this function, in this case function must be const
+	bool operator==(const Point& p) const{ 
 		return (p.x == x) && (p.y == y);
 }
 
@@ -33,18 +42,28 @@ int main(){
 
 	std::cout<<s.size()<<std::endl;
 	
-	std::set<Point> ::iterator it;
+	for (auto it : s)
+		std::cout<<it.x<<","<<it.y<<std::endl;
 
-	for (it=s.begin();it!=s.end();it++)
-		std::cout<<it->x<<","<<it->y<<std::endl;
+	// test function earse(find())
+	Point p(1,1);
+	std::cout<<"###################"<<std::endl;
+	// erase(it) not work??? => auto it by value
+	
+	for (auto &it : s){
+		if (it  == p)
+			s.erase(it);
+	}
 
-	// for (it=s.begin();it!=s.end();it++){
-	// 	if (it->x == it->y)
+	// it works
+	// for (auto it=s.begin(); it != s.end();it++){
+	// 	if (*it  == p)
 	// 		s.erase(it);
 	// }
-	// std::cout<<std::endl;
-	// for (it=s.begin();it!=s.end();it++)
-	// 	std::cout<<it->x<<","<<it->y<<std::endl;
+
+	
+	for (auto it : s)
+	std::cout<<it.x<<","<<it.y<<std::endl;
 
 	return 0;	
 }
