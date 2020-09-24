@@ -30,12 +30,15 @@ inline bool operator!=(const Point& p1, const Point& p2){
 	return (p1.x != p2.x) || (p1.y != p2.y);
 }
 
-
 struct cellstatus{
 	bool is_mine = false;
 	bool is_flagged = false;
 	bool is_uncovered = true;
 	int aroundmines = -1;	
+};
+
+enum GameStatus{
+	RUN, WIN, GAMEOVER
 };
 
 class GameBoard : public Fl_Box{
@@ -62,11 +65,10 @@ class GameBoard : public Fl_Box{
   void checkGameStatus();
   void checkAndUncoverAroundCells(int, int);
 
-  Point* BasePoint_;
   int grid_width_, grid_height_, remain_cells_, remain_flag_;
   std::vector<std::vector<cellstatus>> cells_;	
-  std::multiset<Point> remain_mines_;
-  int game_status_;      // enum running 1, won 2, over 3???
+  std::set<Point> remainMines_;
+  GameStatus status_;     
   
   Fl_PNG_Image *imgMine_, *imgMineCrossed_, *imgFlag_;
   time_t start_time_;

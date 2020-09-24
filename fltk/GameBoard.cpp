@@ -20,8 +20,6 @@ static const Fl_Color count_colors[] = {
 
 GameBoard::GameBoard(int x, int y, int w, int h, int num):Fl_Box(FL_NO_BOX, x, y,(w*CELL_SIZE), (h*CELL_SIZE),nullptr){
 
-	BasePoint_ = new Point(x,y);
-	
 	grid_width_ = w;
 	grid_height_ = h;
 	int mines_num = num;
@@ -107,8 +105,8 @@ void GameBoard::draw(){
 	
 	for (int i = 0; i < grid_width_;i++){
 		for (int j = 0; j < grid_height_; j++){
-			x = BasePoint_->x + i * CELL_SIZE;
-			y = BasePoint_->y + j * CELL_SIZE;
+			x = this->x() + i * CELL_SIZE;
+			y = this->y() + j * CELL_SIZE;
 			
 			cellstatus this_cell = cells_[i][j];
 			if (this_cell.is_uncovered == true){
@@ -146,27 +144,27 @@ void GameBoard::draw(){
 }	
 
 int GameBoard::handle(int event){
-	int x, y;
-	int i,j;
+	int x, y,i,j;
+
+	x = Fl::event_x();
+	y = Fl::event_y();
 	// if event beginning 
 	if (event == FL_PUSH){
 		// check if out of the gameborder
-		if(Fl::event_x() < this->x() || Fl::event_x() > this->x() + grid_width_ * CELL_SIZE ||
-		   Fl::event_y() < this->y() || Fl::event_y() > this->y() + grid_height_ * CELL_SIZE )
+		if(x < this->x() || x > this->x() + grid_width_ * CELL_SIZE ||
+		   y < this->y() || y  > this->y() + grid_height_ * CELL_SIZE )
 			return 0;
 			
 		return 1;
 		
 	}else if(event == FL_RELEASE){
-		x = Fl::event_x();
-		y = Fl::event_y();
 		// check if out of the gameborder
 		if(x < this->x() || x > this->x() + grid_width_ * CELL_SIZE ||
 		   y < this->y() || y > this->y() + grid_height_ * CELL_SIZE )
-			
 			return 0;
 
-		// if event end
+		return 1;
+	}// if event end
 	
 		i = (x - this->x())/CELL_SIZE;
 		j = (y - this->y())/CELL_SIZE;
@@ -174,10 +172,11 @@ int GameBoard::handle(int event){
 		// if event_button left mouse	
 		if (Fl::event_button() == FL_LEFT_MOUSE && cells_[i][j].is_uncovered == false){
 			if (cells_[i][j].is_mine == true){
-				game_status_ = 3;
+				game_status_ = GameStatus::GAMEOVER;
 			}else{
 				cells_[i][j].is_uncovered = true;
 				remain_cells_--;
+				// TODO
 				//	checkAroundCells(x,y);
 			}
 		}
@@ -187,13 +186,9 @@ int GameBoard::handle(int event){
 			remain_flag_--;
 		
 			if (cells_[i][j].is_mine == true){
-				Point temp_p = Point(x,y);
-				std::set<Point> :: iterator it;
-				it = remain_mines_.find(temp_p);
-				if(it != remain_mines_.end()){
-					it++;
-					remain_mines_.erase(it);
-				}
+				Point temp_p = Point(i,j);
+				remainMines_.erase(remainMines.find(temp_p));
+				
 			}
 		}
 		// else if event_button right mouse
@@ -202,7 +197,7 @@ int GameBoard::handle(int event){
 			remain_flag_++;
 			
 			if (cells_[x][y].is_mine == true){
-				// TODO remain_mines_;
+				
 			}		
 		}
 
