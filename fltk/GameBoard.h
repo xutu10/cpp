@@ -68,6 +68,7 @@ class GameBoard : public Fl_Box{
   int grid_width_, grid_height_, remain_cells_, remain_flag_;
   std::vector<std::vector<cellstatus>> cells_;	
   std::set<Point> remainMines_;
+  // could be defined in Windows and update data in GameBoard
   GameStatus status_;     
   
   Fl_PNG_Image *imgMine_, *imgMineCrossed_, *imgFlag_;
