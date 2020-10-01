@@ -2,7 +2,7 @@
 
 #include <sstream>
 #include <iostream>
-
+#include <algorithm>
 #include <FL/fl_draw.H>
 #include <FL/Fl.H>
 
@@ -172,7 +172,7 @@ int GameBoard::handle(int event){
 		// if event_button left mouse	
 		if (Fl::event_button() == FL_LEFT_MOUSE && cells_[i][j].is_uncovered == false){
 			if (cells_[i][j].is_mine == true){
-				game_status_ = GameStatus::GAMEOVER;
+				status_ = GameStatus::GAMEOVER;
 			}else{
 				cells_[i][j].is_uncovered = true;
 				remain_cells_--;
@@ -186,9 +186,8 @@ int GameBoard::handle(int event){
 			remain_flag_--;
 		
 			if (cells_[i][j].is_mine == true){
-				Point temp_p = Point(i,j);
-				remainMines_.erase(remainMines.find(temp_p));
-				
+				Point temp_p = Point(i,j);	
+				remainMines_.erase(std::find(remainMines_.begin(), remainMines_.end(), temp_p));
 			}
 		}
 		// else if event_button right mouse
@@ -197,17 +196,20 @@ int GameBoard::handle(int event){
 			remain_flag_++;
 			
 			if (cells_[x][y].is_mine == true){
-				
+				Point temp_p = Point(i,j);
+				remainMines_.insert(temp_p);
 			}		
-		}
-
-		// TODO
-		this-> checkGameStatus();
-		// this-> updategamestatus();
-		return 1;
-	}else{
+		}else{
 		return Fl_Box::handle(event); // ???
 	}
+
+	// TODO
+	this-> checkGameStatus();
+	
+	// this-> updategamestatus();
+
+	return 1;
+
 }
 
 void GameBoard::checkAndUncoverAroundCells(int i, int j){
@@ -260,9 +262,13 @@ void GameBoard::checkAndUncoverAroundCells(int i, int j){
 
 void GameBoard::checkGameStatus(){
 	// TODO reset game_status_ for each new game??
-	
-	if (remain_cells_ == 0)
-		game_status_ = 2;
-	if (remain_mines_.size() == 0)
-		game_status_ = 2;
+
+	if(status_ == GAMEOVER){
+		
+	}else if (remain_cells_ == 0)
+		status_ = GameStatus::WIN;
+	else{
+		status_ = GameStatus::RUN;
+	}
+		
 }
