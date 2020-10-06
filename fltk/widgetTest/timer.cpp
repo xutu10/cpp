@@ -6,6 +6,7 @@
 #include <iostream>
 #include <sstream>
 #include <iomanip> // setfill, setw
+#include <ctime>
 using namespace std;
 
 class GameBoard: public Fl_Box{
@@ -13,7 +14,7 @@ public:
 	GameBoard(int a, int y, int wd, int h, const char* L=0): Fl_Box(a, y, wd, h,L){
 		x_=a;
 		y_=y;
-		timer_ = 0;
+		startTime_ = time(nullptr);
 		time_ = new Fl_Box(FL_UP_BOX, x_, y_, 40, 25,"timer");
 
 		// call the member of base class with bracket
@@ -21,9 +22,9 @@ public:
 	}
 
 	void show_time(){
-		timer_++;
+		time_t timer = time(nullptr) - startTime_;
 		stringstream ss;
-		ss<<setfill('0')<<setw(2)<<timer_;
+		ss<<setfill('0')<<setw(3)<<timer;
 		time_->copy_label(ss.str().c_str());
 	}
 
@@ -35,7 +36,8 @@ public:
 	}
 
 private:
-	int x_,y_, timer_;
+	int x_,y_;
+	time_t startTime_;
 	Fl_Box* time_;
 };
 
