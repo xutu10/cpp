@@ -25,6 +25,7 @@ public:
 		time_t timer = time(nullptr) - startTime_;
 		stringstream ss;
 		ss<<setfill('0')<<setw(3)<<timer;
+		Fl::wait();
 		time_->copy_label(ss.str().c_str());
 	}
 

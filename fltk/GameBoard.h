@@ -8,6 +8,8 @@
 #include <FL/Fl_Box.H>
 #include <FL/Fl_PNG_Image.H>
 
+#include "MainWindow.h"
+
 static const int CELL_SIZE = 16;
 
 struct Point{
@@ -65,15 +67,16 @@ class GameBoard : public Fl_Box{
   void checkGameStatus();
   void checkAndUncoverAroundCells(int, int);
 
-  int grid_width_, grid_height_, remain_cells_, remain_flag_;
+  int grid_width_, grid_height_, remain_cells_, remainFlag_;
   std::vector<std::vector<cellstatus>> cells_;	
   std::set<Point> remainMines_;
   // could be defined in Windows and update data in GameBoard
   GameStatus status_;     
   
   Fl_PNG_Image *imgMine_, *imgMineCrossed_, *imgFlag_;
-  time_t start_time_;
+  time_t startTime_;
 
+  MainWindow* mainWindow_;
 };
 
 #endif

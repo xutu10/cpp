@@ -37,6 +37,7 @@ class mainWindow : public Fl_Window{
 	Fl_Box* _timer;
 
 	newGameDialog* _newgame = nullptr;
+	GameBoard* gameBoard_ = nullptr;
 };
 
 

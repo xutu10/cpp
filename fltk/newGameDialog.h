@@ -35,7 +35,7 @@ newGameDialog();
  }
  
 private:
- int _boardW, _boardH, _mines; 
+ int _boardW, _boardH, _mines=0; 
  Diffculty _diff = Beginner;
 
  Fl_Spinner* _custW;

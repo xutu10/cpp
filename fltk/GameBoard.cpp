@@ -18,11 +18,12 @@ static const Fl_Color count_colors[] = {
 };
 
 
-GameBoard::GameBoard(int x, int y, int w, int h, int num):Fl_Box(FL_NO_BOX, x, y,(w*CELL_SIZE), (h*CELL_SIZE),nullptr){
+GameBoard::GameBoard(int x, int y, int w, int h, int num, mainWindow* mw):Fl_Box(FL_NO_BOX, x, y,(w*CELL_SIZE), (h*CELL_SIZE),nullptr){
 
 	grid_width_ = w;
 	grid_height_ = h;
 	int mines_num = num;
+	mainWindow_ = mw;
 	// mainwindow object is neccessary ???
 	int game_status_ = 0;
 	cells_.clear();
@@ -51,7 +52,7 @@ GameBoard::~GameBoard(){
 
 void GameBoard::initGame(int mines){
 
-	remain_mines_.clear();
+	remainMines_.clear();
 	int mines_placed = 0;
 	int i,j;
 	// in mainwindow the func will be called
@@ -206,10 +207,9 @@ int GameBoard::handle(int event){
 	// TODO
 	this-> checkGameStatus();
 	
-	// this-> updategamestatus();
+	//	mainWindow_-> updateGamestatus();
 
 	return 1;
-
 }
 
 void GameBoard::checkAndUncoverAroundCells(int i, int j){
@@ -266,9 +266,9 @@ void GameBoard::checkGameStatus(){
 	if(status_ == GAMEOVER){
 		
 	}else if (remain_cells_ == 0)
-		status_ = GameStatus::WIN;
+		status_ = WIN;
 	else{
-		status_ = GameStatus::RUN;
+		status_ = RUN;
 	}
 		
 }

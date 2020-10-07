@@ -1,9 +1,12 @@
 #include "mainWindow.h"
 #include <FL/Fl_Menu_Item.H>
 #include<FL/fl_ask.H>
-#include<iostream>
-using namespace std;
 
+#include<iostream>
+#include<ctime>
+#include<sstream>
+#include<iomainip>
+using namespace std;
 
 void quit_cb(Fl_Widget*, void* ctx){
 	exit(0);
@@ -98,25 +101,20 @@ void mainWindow::_newGameCb(){
 	int w = this->_newgame->getBoardW();
 	int h = this->_newgame->getBoardH();
 	
-	this->_setupBoardSize(w,h);
-}
-
-void mainWindow::_resetGame(){
-
-	Fl::remove_timeout(timer_cb,this);
-	//_board->deactivate();
-	
+	if(this->_newgame->getMines() != 0){
+		this->_setupBoardSize(w,h);
+	}
+	// after init GameBoard, delete Dialog
+	delete this->_newgame;
 }
 
 void mainWindow::_setupBoardSize(int w, int h){
 
-	//if(this->_board) delete this->_board;
-
-    this->_reshapeMainwindow(w,h);
+	this->_reshapeMainwindow(w,h);
 	this->_menuBar->size(w, 30);
 
 	int boardY = 30;
-	//this->_board = new GameBoard(10, boardY,w,h,this);
+	this->gameBoard_ = new GameBoard(10, boardY,w,h,this);
 
 	Fl::repeat_timeout(1.0,timer_cb,this);
 	
@@ -130,29 +128,47 @@ void mainWindow::_reshapeMainwindow(int w, int h){
 }
 
 void mainWindow::_updateGameStatus(){
-	
-	
+
+	if(gameBoard_->status_ == GAMEOVER)
+		_gameOver();
+	else if(gameBoard_->status_ == WIN)
+		_gameWon();
+	else{
+		// show the timer
+		time_t timer = this->gameBoard_-> startTime_ - time(nullptr);
+		stringstream ss;
+		ss<<setfill('0')<<setw(3)<<timer;
+		_timer->copy_label(ss.str().c_str());
+		// show status, remain mines
+		ss<<setfill('0')<<setw(2)<<gameBoard_->remainFlag_;
+		_mines->copy_label(ss.str().c_str());
+	}	
+}
+
+void mainWindow::_resetGame(){
+
+	Fl::remove_timeout(timer_cb,this);
+    this-> gameBoard_->deactivate();
+	delete gameBoard_;
 }
 
 void mainWindow::_gameOver(){
-	cout<<"game over "<<endl;
 
 	// TODO set image
 	this->_resetGame();
-	this->_updateGameStatus();
-
-	Fl::wait(); //???
+	
+	Fl::wait(); // wait something happens
 	fl_beep();
-
 	fl_message_title("game over!!!");
-	fl_message("you lost");
-   
+  
 }
 
 void mainWindow::_gameWon(){
 	// TODO set image
 	this->_resetGame();
-	this->_updateGameStatus();
 
-	
+	Fl::wait();
+	fl_beep();
+	fl_message_title("game won!!!");
+   
 }
