@@ -116,7 +116,8 @@ void mainWindow::_setupBoardSize(int w, int h){
 	int boardY = 30;
 	this->gameBoard_ = new GameBoard(10, boardY,w,h,this);
 
-	Fl::repeat_timeout(1.0,timer_cb,this);
+	
+	//???	Fl::repeat_timeout(1.0,timer_cb,this);
 	
 }
 
@@ -125,6 +126,7 @@ void mainWindow::_reshapeMainwindow(int w, int h){
 	this->size(newW,newH);
 
 	// TODO reshape statusbox, image and timer
+	
 }
 
 void mainWindow::_updateGameStatus(){
@@ -135,7 +137,7 @@ void mainWindow::_updateGameStatus(){
 		_gameWon();
 	else{
 		// show the timer
-		time_t timer = this->gameBoard_-> startTime_ - time(nullptr);
+		time_t timer = gameBoard_->getGameTime();
 		stringstream ss;
 		ss<<setfill('0')<<setw(3)<<timer;
 		_timer->copy_label(ss.str().c_str());

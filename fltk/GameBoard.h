@@ -7,8 +7,9 @@
 
 #include <FL/Fl_Box.H>
 #include <FL/Fl_PNG_Image.H>
-
-#include "MainWindow.h"
+// recursive definition
+//#include "mainWindow.h"
+class mainWindow;
 
 static const int CELL_SIZE = 16;
 
@@ -44,21 +45,21 @@ enum GameStatus{
 };
 
 class GameBoard : public Fl_Box{
- friend class MainWindow;
+ friend class mainWindow;
 
  public:
- GameBoard(int,int,int,int,int);
+ GameBoard(int,int,int,int,int, mainWindow*);
   ~GameBoard();
  
   virtual void draw();
   virtual int handle(int);
 
   int getGameStatus() const {
-	  return game_status_;
+	  return status_;
   };
   
   int getGameTime() const{
-	  return difftime(time(nullptr), start_time_);
+	  return difftime(time(nullptr), startTime_);
   }
 
  private:
@@ -76,7 +77,7 @@ class GameBoard : public Fl_Box{
   Fl_PNG_Image *imgMine_, *imgMineCrossed_, *imgFlag_;
   time_t startTime_;
 
-  MainWindow* mainWindow_;
+  mainWindow* mainWindow_;
 };
 
 #endif

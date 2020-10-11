@@ -7,6 +7,7 @@
 #include <FL/Fl_Box.H>
 
 #include "newGameDialog.h"
+#include "GameBoard.h"
 
 class mainWindow : public Fl_Window{
 

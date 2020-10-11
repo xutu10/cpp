@@ -25,7 +25,7 @@ GameBoard::GameBoard(int x, int y, int w, int h, int num, mainWindow* mw):Fl_Box
 	int mines_num = num;
 	mainWindow_ = mw;
 	// mainwindow object is neccessary ???
-	int game_status_ = 0;
+	status_ = RUN;
 	cells_.clear();
 
 	// init cells, double array
@@ -43,7 +43,7 @@ GameBoard::GameBoard(int x, int y, int w, int h, int num, mainWindow* mw):Fl_Box
     imgMineCrossed_ = new Fl_PNG_Image("images/mine_crossed.png");
 	imgFlag_ = new Fl_PNG_Image("images/flag.png");
 
-	start_time_ = time(nullptr);
+	startTime_ = time(nullptr);
 }
 
 GameBoard::~GameBoard(){
@@ -64,7 +64,7 @@ void GameBoard::initGame(int mines){
 		if(cells_[i][j].is_mine != true ){
 			cells_[i][j].is_mine = true;
 			mines_placed++;
-			remain_mines_.insert(Point(i,j));
+			remainMines_.insert(Point(i,j));
 		}
 	}	
 	calAroundMines();
@@ -184,7 +184,7 @@ int GameBoard::handle(int event){
 		//else if event_button right mouse
 		else if (Fl::event_button() == FL_RIGHT_MOUSE && cells_[i][j].is_uncovered == true && cells_[i][j].is_flagged == false ){
 			cells_[i][j].is_flagged == true;
-			remain_flag_--;
+			remainFlag_--;
 		
 			if (cells_[i][j].is_mine == true){
 				Point temp_p = Point(i,j);	
@@ -194,7 +194,7 @@ int GameBoard::handle(int event){
 		// else if event_button right mouse
 		else if (Fl::event_button() == FL_RIGHT_MOUSE && cells_[x][y].is_flagged == true){
 			cells_[x][y].is_flagged == false;
-			remain_flag_++;
+			remainFlag_++;
 			
 			if (cells_[x][y].is_mine == true){
 				Point temp_p = Point(i,j);
@@ -206,8 +206,7 @@ int GameBoard::handle(int event){
 
 	// TODO
 	this-> checkGameStatus();
-	
-	//	mainWindow_-> updateGamestatus();
+	this-> mainWindow_-> _updateGameStatus();
 
 	return 1;
 }

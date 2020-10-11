@@ -52,6 +52,7 @@ void radio_cb(Fl_Widget*, void* ctx){
 
 newGameDialog::newGameDialog() : Fl_Window(300,300,"new game"){
 
+	// at end must be deleted???
 	Fl_Button* newButton = new Fl_Button(20, 220, 100, 25);
 	newButton->label("new game");
 	newButton->callback(newgame_cb,this);
