@@ -2,6 +2,7 @@
 #include<FL/Fl_Window.H>
 #include<FL/Fl_Box.H>
 #include<FL/fl_draw.H> // fl_draw_box
+#include<FL/Fl_PNG_Image.H>
 
 #include <iostream>
 #include <sstream>
@@ -12,40 +13,41 @@ using namespace std;
 class GameBoard: public Fl_Box{
 public:
 	GameBoard(int a, int y, int wd, int h, const char* L=0): Fl_Box(a, y, wd, h,L){
-		x_=a;
-		y_=y;
 		startTime_ = time(nullptr);
-		time_ = new Fl_Box(FL_UP_BOX, x_, y_, 40, 25,"timer");
-
-		// call the member of base class with bracket
-		std::cout<<this->w()<<","<<this->x()<<std::endl;	
+		time_ = new Fl_Box(FL_UP_BOX, this->x()+50, this->y(), 40, 16,"timer");
+		img = new Fl_PNG_Image("mine.png");
 	}
 
 	void show_time(){
 		time_t timer = time(nullptr) - startTime_;
 		stringstream ss;
 		ss<<setfill('0')<<setw(3)<<timer;
-		Fl::wait();
 		time_->copy_label(ss.str().c_str());
 	}
 
 	void draw(){
 
 		Fl_Box::draw(); // draw the large box
-		//fl_draw_box(FL_UP_BOX, x_, y_, 16, 16, FL_GRAY);
-
+		for(int i = 0; i< 10; i++){
+			for(int j =0; j< 10; j++){
+				fl_draw_box(FL_UP_BOX,this->x()+16+i*16,this->y()+16+j*16 , 16, 16, FL_GRAY);
+			}
+		}		
+		img->draw(this->x()+16, this->y()+16);
+		
 	}
 
 private:
-	int x_,y_;
 	time_t startTime_;
 	Fl_Box* time_;
+	Fl_PNG_Image* img;
+	
 };
 
 void timer_cb(void* ctx){
 
 	static_cast<GameBoard *>(ctx)->show_time();
-    Fl::repeat_timeout(0.1,timer_cb, ctx);
+    Fl::repeat_timeout(1.0,timer_cb, ctx);
 }
 
 int main(int argc, char** argv){
