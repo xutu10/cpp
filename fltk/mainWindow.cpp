@@ -5,7 +5,7 @@
 #include<iostream>
 #include<ctime>
 #include<sstream>
-#include<iomainip>
+#include<iomanip>
 using namespace std;
 
 void quit_cb(Fl_Widget*, void* ctx){
@@ -35,7 +35,7 @@ void about_cb(Fl_Widget*, void* ctx){
 
 void timer_cb(void* ctx){
 
-	static_cast<mainWindow *>(ctx);
+	static_cast<mainWindow *>(ctx)->_updateGameStatus();
 	Fl::repeat_timeout(1.0, timer_cb, ctx);
 }
 
@@ -100,25 +100,27 @@ void mainWindow::_newGameCb(){
 
 	int w = this->_newgame->getBoardW();
 	int h = this->_newgame->getBoardH();
-	
-	if(this->_newgame->getMines() != 0){
-		this->_setupBoardSize(w,h);
+	int mines = this->_newgame->getMines();
+
+	if(mines != 0){
+		cout<<mines<<endl;
+		this->_setupBoardSize(w,h,mines);
 	}
 	// after init GameBoard, delete Dialog
-	delete this->_newgame;
+	//	delete this->_newgame;
 }
 
-void mainWindow::_setupBoardSize(int w, int h){
+void mainWindow::_setupBoardSize(int w, int h, int m){
 
-	this->_reshapeMainwindow(w,h);
-	this->_menuBar->size(w, 30);
-
-	int boardY = 30;
-	this->gameBoard_ = new GameBoard(10, boardY,w,h,this);
-
+	// this->_reshapeMainwindow(w,h);
+	// this->_menuBar->size(w, 30);
 	
-	//???	Fl::repeat_timeout(1.0,timer_cb,this);
+	this->gameBoard_ = new GameBoard(10,100,w,h,m,this);
+
+	this->add(gameBoard_);
+	this->_updateGameStatus();
 	
+	Fl::repeat_timeout(1.0,timer_cb,this);
 }
 
 void mainWindow::_reshapeMainwindow(int w, int h){
@@ -129,22 +131,29 @@ void mainWindow::_reshapeMainwindow(int w, int h){
 	
 }
 
+int timer;
+stringstream ss;
+
 void mainWindow::_updateGameStatus(){
 
+	cout<<"updategamestatus"<<endl;
 	if(gameBoard_->status_ == GAMEOVER)
 		_gameOver();
 	else if(gameBoard_->status_ == WIN)
 		_gameWon();
 	else{
 		// show the timer
-		time_t timer = gameBoard_->getGameTime();
-		stringstream ss;
+		timer = gameBoard_->getGameTime();
+		ss.str("");
 		ss<<setfill('0')<<setw(3)<<timer;
 		_timer->copy_label(ss.str().c_str());
 		// show status, remain mines
+		ss.str("");
 		ss<<setfill('0')<<setw(2)<<gameBoard_->remainFlag_;
 		_mines->copy_label(ss.str().c_str());
-	}	
+	}
+
+	this->redraw();
 }
 
 void mainWindow::_resetGame(){

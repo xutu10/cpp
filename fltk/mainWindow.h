@@ -11,6 +11,8 @@
 
 class mainWindow : public Fl_Window{
 
+	friend class GameBoard;
+	
  public:
 	mainWindow(int w, int h, const char*);
 	~mainWindow();
@@ -25,7 +27,7 @@ class mainWindow : public Fl_Window{
 	void _aboutDialog();
 	void _newGameCb();
 	void _resetGame();
-	void _setupBoardSize(int w,int h);
+	void _setupBoardSize(int w,int h,int m);
 	void _reshapeMainwindow(int w, int h);
 	void _updateGameStatus();
 	void _gameWon();

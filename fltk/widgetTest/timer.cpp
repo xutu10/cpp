@@ -19,7 +19,8 @@ public:
 	}
 
 	void show_time(){
-		time_t timer = time(nullptr) - startTime_;
+		//		time_t timer = time(nullptr) - startTime_;
+		int timer = difftime(time(nullptr), startTime_);
 		stringstream ss;
 		ss<<setfill('0')<<setw(3)<<timer;
 		time_->copy_label(ss.str().c_str());
@@ -27,6 +28,8 @@ public:
 
 	void draw(){
 
+		cout<<"draw"<<endl;
+		
 		Fl_Box::draw(); // draw the large box
 		for(int i = 0; i< 10; i++){
 			for(int j =0; j< 10; j++){

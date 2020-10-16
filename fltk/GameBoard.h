@@ -22,7 +22,7 @@ struct Point{
 inline bool operator<(const Point& p1, const Point& p2){
 	if (p1.x == p2.x && p1.y == p2.y)
 		return false;
-	return (p1.x + p2.y < p2.x + p2.y);
+	return true;
 }
 
 inline bool operator==(const Point& p1, const Point& p2){ 
