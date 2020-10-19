@@ -25,18 +25,15 @@ inline bool operator<(const Point& p1, const Point& p2){
 	return true;
 }
 
-inline bool operator==(const Point& p1, const Point& p2){ 
+inline bool operator==(const Point& p1, const Point& p2){
 	return (p1.x == p2.x) && (p1.y == p2.y);
 }
 
-inline bool operator!=(const Point& p1, const Point& p2){
-	return (p1.x != p2.x) || (p1.y != p2.y);
-}
 
 struct cellstatus{
 	bool is_mine = false;
 	bool is_flagged = false;
-	bool is_uncovered = true;
+	bool is_uncovered = false;
 	int aroundmines = -1;	
 };
 
@@ -64,6 +61,8 @@ class GameBoard : public Fl_Box{
 
  private:
   void initGame(int);
+  void leftButton(int,int);
+  void rightButton(int,int);
   void calAroundMines();
   void checkGameStatus();
   void checkAndUncoverAroundCells(int, int);

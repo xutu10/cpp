@@ -106,11 +106,7 @@ void GameBoard::calAroundMines(){
 
 void GameBoard::draw(){
 
-	cout<<"draw"<<endl;
-
 	Fl_Box::draw();
-
-	// fl_draw_box(FL_UP_BOX, this->x()+50, this->y()+50, CELL_SIZE, CELL_SIZE, FL_RED);
 
 	int x, y;
 	Fl_Color c = FL_DARK1;
@@ -123,41 +119,41 @@ void GameBoard::draw(){
 			cellstatus this_cell = cells_[i][j];
 			if (this_cell.is_uncovered == true){
 				// TODO flexible height with variable 
+				fl_draw_box(FL_UP_BOX, x, y, CELL_SIZE, CELL_SIZE, FL_BLACK);
+			}else{
 				fl_draw_box(FL_UP_BOX, x, y, CELL_SIZE, CELL_SIZE, FL_GRAY);
 			}
 			
-			if (this_cell.is_uncovered == false && this_cell.is_mine == true){
-				// draw mine 
-				c = FL_RED;
-				fl_draw_box(FL_BORDER_BOX, x, y, CELL_SIZE, CELL_SIZE, c);
-				imgMineCrossed_->draw(x,y);
-			}
+	// 		if (this_cell.is_uncovered == false && this_cell.is_mine == true){
+	// 			// draw mine 
+	// 			c = FL_RED;
+	// 			fl_draw_box(FL_BORDER_BOX, x, y, CELL_SIZE, CELL_SIZE, c);
+	// 			imgMineCrossed_->draw(x,y);
+	// 		}
 			
-			if (this_cell.is_uncovered == false && this_cell.is_mine == false){
-				if (this_cell.aroundmines = 0){
-					c = FL_DARK1;
+	// 		if (this_cell.is_uncovered == false && this_cell.is_mine == false){
+	// 			if (this_cell.aroundmines = 0){
+	// 				c = FL_DARK1;
 					
-				}else {
-					std::stringstream s;
-					s<<this_cell.aroundmines;
-					fl_color(count_colors[this_cell.aroundmines-1]); //??? TODO
-					fl_font(FL_COURIER | FL_BOLD, 16);
-					// TODO align to top??
-					fl_draw(s.str().c_str(), x+2, y - fl_descent() + fl_height());	
-				}
-				fl_draw_box(FL_BORDER_BOX, x, y, CELL_SIZE, CELL_SIZE, c);
-			}
+	// 			}else {
+	// 				std::stringstream s;
+	// 				s<<this_cell.aroundmines;
+	// 				fl_color(count_colors[this_cell.aroundmines-1]); //??? TODO
+	// 				fl_font(FL_COURIER | FL_BOLD, 16);
+	// 				// TODO align to top??
+	// 				fl_draw(s.str().c_str(), x+2, y - fl_descent() + fl_height());	
+	// 			}
+	// 			fl_draw_box(FL_BORDER_BOX, x, y, CELL_SIZE, CELL_SIZE, c);
+	// 		}
 			
-			if (this_cell.is_flagged == true){
-				imgFlag_->draw(x,y);
- 			}
-		}
+	// 		if (this_cell.is_flagged == true){
+	// 			imgFlag_->draw(x,y);
+ 	// 		}
+	 	}
 	}
 }	
 
 int GameBoard::handle(int event){
-
-	cout<<"handle"<<endl;
 	
 	int x, y,i,j;
 
@@ -171,60 +167,78 @@ int GameBoard::handle(int event){
 			return 0;
 			
 		return 1;
-		
 	}else if(event == FL_RELEASE){
 		// check if out of the gameborder
 		if(x < this->x() || x > this->x() + grid_width_ * CELL_SIZE ||
 		   y < this->y() || y > this->y() + grid_height_ * CELL_SIZE )
 			return 0;
-
-		return 1;
-	}// if event end
-	
+		
 		i = (x - this->x())/CELL_SIZE;
 		j = (y - this->y())/CELL_SIZE;
    
 		// if event_button left mouse	
-		if (Fl::event_button() == FL_LEFT_MOUSE && cells_[i][j].is_uncovered == false){
-			if (cells_[i][j].is_mine == true){
-				status_ = GameStatus::GAMEOVER;
-			}else{
-				cells_[i][j].is_uncovered = true;
-				remain_cells_--;
-				// TODO
-				//	checkAroundCells(x,y);
-			}
+		if (Fl::event_button() == FL_LEFT_MOUSE) {
+			leftButton(i,j);
+		}else if(Fl::event_button() == FL_RIGHT_MOUSE){
+			rightButton(i,j);
 		}
-		//else if event_button right mouse
-		else if (Fl::event_button() == FL_RIGHT_MOUSE && cells_[i][j].is_uncovered == true && cells_[i][j].is_flagged == false ){
-			cells_[i][j].is_flagged == true;
-			remainFlag_--;
-		
-			if (cells_[i][j].is_mine == true){
-				Point temp_p = Point(i,j);	
-				remainMines_.erase(std::find(remainMines_.begin(), remainMines_.end(), temp_p));
-			}
+
+		//		this->redraw();
+
+		this-> checkGameStatus();
+		this-> mainWindow_-> _updateGameStatus();
+
+		return 1;		
+	}
+	else{
+			return Fl_Box::handle(event); // ???
 		}
-		// else if event_button right mouse
-		else if (Fl::event_button() == FL_RIGHT_MOUSE && cells_[x][y].is_flagged == true){
-			cells_[x][y].is_flagged == false;
-			remainFlag_++;
-			
-			if (cells_[x][y].is_mine == true){
-				Point temp_p = Point(i,j);
-				remainMines_.insert(temp_p);
-			}		
-		}else{
-		return Fl_Box::handle(event); // ???
+}
+
+
+void GameBoard::leftButton(int i, int j){
+
+	cout<<cells_[i][j].is_mine<<endl;
+	
+	if (cells_[i][j].is_mine == true){
+		status_ = GameStatus::GAMEOVER;
+	}else if(cells_[i][j].is_uncovered == false){
+		cells_[i][j].is_uncovered = true;
+		remain_cells_--;
+		// TODO
+		//checkAndUncoverAroundCells(i,j);
 	}
 
-	// TODO
-	this-> checkGameStatus();
-	this-> mainWindow_-> _updateGameStatus();
+	this->redraw();
+}
 
-	cout<<"handle end"<<endl;
+
+void GameBoard::rightButton(int i, int j){
+
+	cout<<"right"<<endl;
 	
-	return 1;
+	if(cells_[i][j].is_uncovered == true && cells_[i][j].is_flagged == false ){
+		cells_[i][j].is_flagged == true;
+		remainFlag_--;
+
+		cout<<i<<","<<j<<","<<cells_[i][j].is_flagged<<endl;
+		
+		if (cells_[i][j].is_mine == true){
+			Point temp_p = Point(i,j);	
+			remainMines_.erase(std::find(remainMines_.begin(), remainMines_.end(), temp_p));
+		}
+	}else if (cells_[i][j].is_flagged == true){
+		cells_[i][j].is_flagged == false;
+		remainFlag_++;
+			
+		if (cells_[i][j].is_mine == true){
+			Point temp_p = Point(i,j);
+			remainMines_.insert(temp_p);
+		}
+	}
+
+	this->redraw();
+
 }
 
 void GameBoard::checkAndUncoverAroundCells(int i, int j){
@@ -284,6 +298,5 @@ void GameBoard::checkGameStatus(){
 		status_ = WIN;
 	else{
 		status_ = RUN;
-	}
-		
+	}		
 }

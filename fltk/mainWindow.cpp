@@ -136,9 +136,10 @@ stringstream ss;
 
 void mainWindow::_updateGameStatus(){
 
-	cout<<"updategamestatus"<<endl;
-	if(gameBoard_->status_ == GAMEOVER)
+	if(gameBoard_->status_ == GAMEOVER){
+		cout<<"gameover"<<endl;
 		_gameOver();
+	}
 	else if(gameBoard_->status_ == WIN)
 		_gameWon();
 	else{
@@ -170,7 +171,7 @@ void mainWindow::_gameOver(){
 	
 	Fl::wait(); // wait something happens
 	fl_beep();
-	fl_message_title("game over!!!");
+	fl_message("game over!!!");
   
 }
 
