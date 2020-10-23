@@ -27,6 +27,7 @@ GameBoard::GameBoard(int x, int y, int w, int h, int num, mainWindow* mw):Fl_Box
 	grid_height_ = h;
 	remainFlag_ = num;
 	mainWindow_ = mw;
+	remain_cells_ = w * h - num;
 	// mainwindow object is neccessary ???
 	status_ = RUN;
 	cells_.clear();
@@ -46,7 +47,6 @@ GameBoard::GameBoard(int x, int y, int w, int h, int num, mainWindow* mw):Fl_Box
 	imgFlag_ = new Fl_PNG_Image("images/flag.png");
 
 	startTime_ = time(nullptr);
-	cout<<"init completed"<<endl;
 
 }
 
@@ -72,7 +72,7 @@ void GameBoard::initGame(int mines){
 			remainMines_.insert(Point(i,j));
 		}
 	}
-	
+
 	calAroundMines();
 }
 
@@ -117,38 +117,44 @@ void GameBoard::draw(){
 			y = this->y() + j * CELL_SIZE;
 			
 			cellstatus this_cell = cells_[i][j];
-			if (this_cell.is_uncovered == true){
+			if (this_cell.is_uncovered == false){
 				// TODO flexible height with variable 
-				fl_draw_box(FL_UP_BOX, x, y, CELL_SIZE, CELL_SIZE, FL_BLACK);
-			}else{
-				fl_draw_box(FL_UP_BOX, x, y, CELL_SIZE, CELL_SIZE, FL_GRAY);
+				c = FL_DARK1;
+				fl_draw_box(FL_UP_BOX, x, y, CELL_SIZE, CELL_SIZE, c);
 			}
 			
-	// 		if (this_cell.is_uncovered == false && this_cell.is_mine == true){
-	// 			// draw mine 
-	// 			c = FL_RED;
-	// 			fl_draw_box(FL_BORDER_BOX, x, y, CELL_SIZE, CELL_SIZE, c);
-	// 			imgMineCrossed_->draw(x,y);
-	// 		}
+			if (this_cell.is_uncovered == true && this_cell.is_mine == true){
+				// draw mine 
+				c = FL_RED;
+				fl_draw_box(FL_BORDER_BOX, x, y, CELL_SIZE, CELL_SIZE, c);
+				imgMineCrossed_->draw(x,y);
+			}
+
+			if(status_ != RUN && this_cell.is_mine == true){
+				fl_draw_box(FL_BORDER_BOX, x, y, CELL_SIZE, CELL_SIZE, c);
+				c = FL_GRAY;
+				fl_draw_box(FL_BORDER_FRAME, x, y, CELL_SIZE, CELL_SIZE, c);			
+				imgMine_->draw(x,y);
+		
+			}
 			
-	// 		if (this_cell.is_uncovered == false && this_cell.is_mine == false){
-	// 			if (this_cell.aroundmines = 0){
-	// 				c = FL_DARK1;
-					
-	// 			}else {
-	// 				std::stringstream s;
-	// 				s<<this_cell.aroundmines;
-	// 				fl_color(count_colors[this_cell.aroundmines-1]); //??? TODO
-	// 				fl_font(FL_COURIER | FL_BOLD, 16);
-	// 				// TODO align to top??
-	// 				fl_draw(s.str().c_str(), x+2, y - fl_descent() + fl_height());	
-	// 			}
-	// 			fl_draw_box(FL_BORDER_BOX, x, y, CELL_SIZE, CELL_SIZE, c);
-	// 		}
+			if (this_cell.is_uncovered == true && this_cell.is_mine == false){
+				if (this_cell.aroundmines == 0){
+					c = FL_GRAY;
+					fl_draw_box(FL_BORDER_FRAME, x, y, CELL_SIZE, CELL_SIZE, c);
+				}else {
+					std::stringstream s;
+					s<<this_cell.aroundmines;
+					fl_color(count_colors[this_cell.aroundmines-1]); //??? TODO
+					fl_font(FL_COURIER | FL_BOLD, 16);
+					// TODO align to top??
+					fl_draw(s.str().c_str(), x+2, y - fl_descent() + fl_height());	
+				}
+			}
 			
-	// 		if (this_cell.is_flagged == true){
-	// 			imgFlag_->draw(x,y);
- 	// 		}
+			if (RUN==status_ && this_cell.is_flagged == true){
+				imgFlag_->draw(x,y);
+ 			}
 	 	}
 	}
 }	
@@ -198,15 +204,14 @@ int GameBoard::handle(int event){
 
 void GameBoard::leftButton(int i, int j){
 
-	cout<<cells_[i][j].is_mine<<endl;
-	
 	if (cells_[i][j].is_mine == true){
+		cells_[i][j].is_uncovered = true;
 		status_ = GameStatus::GAMEOVER;
 	}else if(cells_[i][j].is_uncovered == false){
 		cells_[i][j].is_uncovered = true;
 		remain_cells_--;
 		// TODO
-		//checkAndUncoverAroundCells(i,j);
+		checkAndUncoverAroundCells(i,j);
 	}
 
 	this->redraw();
@@ -215,22 +220,16 @@ void GameBoard::leftButton(int i, int j){
 
 void GameBoard::rightButton(int i, int j){
 
-	cout<<"right"<<endl;
-	
-	if(cells_[i][j].is_uncovered == true && cells_[i][j].is_flagged == false ){
-		cells_[i][j].is_flagged == true;
-		remainFlag_--;
-
-		cout<<i<<","<<j<<","<<cells_[i][j].is_flagged<<endl;
-		
+	if(cells_[i][j].is_uncovered == false && cells_[i][j].is_flagged == false ){
+		cells_[i][j].is_flagged = true;
+		remainFlag_--;		
 		if (cells_[i][j].is_mine == true){
 			Point temp_p = Point(i,j);	
 			remainMines_.erase(std::find(remainMines_.begin(), remainMines_.end(), temp_p));
 		}
 	}else if (cells_[i][j].is_flagged == true){
-		cells_[i][j].is_flagged == false;
+		cells_[i][j].is_flagged = false;
 		remainFlag_++;
-			
 		if (cells_[i][j].is_mine == true){
 			Point temp_p = Point(i,j);
 			remainMines_.insert(temp_p);
@@ -242,50 +241,57 @@ void GameBoard::rightButton(int i, int j){
 }
 
 void GameBoard::checkAndUncoverAroundCells(int i, int j){
-	
+
 	if (cells_[i][j].aroundmines == 0){
-		if (i-1 >= 0 && j-1 >= 0 && cells_[i-1][j-1].is_flagged != true){
+		if (i-1 >= 0 && j-1 >= 0 && cells_[i-1][j-1].is_flagged != true &&cells_[i-1][j-1].is_uncovered == false ){
 				cells_[i-1][j-1].is_uncovered = true;
 				remain_cells_--;
 				checkAndUncoverAroundCells(i-1, j-1);
-		}
-		if (j-1 >= 0 && cells_[i][j-1].is_flagged != true){
+		}		
+
+		if (j-1 >= 0 && cells_[i][j-1].is_flagged != true && cells_[i][j-1].is_uncovered == false){
 				cells_[i][j-1].is_uncovered =true;
 				remain_cells_--;
 				checkAndUncoverAroundCells(i,j-1);
-		}
-		if (i+1 < grid_width_ && j-1>=0 && cells_[i+1][j-1].is_flagged != true){
+		}		
+
+		if (i+1 < grid_width_ && j-1>=0 && cells_[i+1][j-1].is_flagged != true && cells_[i+1][j-1].is_uncovered == false){
 				cells_[i+1][j-1].is_uncovered =true;
 				remain_cells_--;
 				checkAndUncoverAroundCells(i+1,j-1);
 		}
-		if (i-1 >= 0 && cells_[i-1][j].is_flagged != true){
+		
+		if (i-1 >= 0 && cells_[i-1][j].is_flagged != true && cells_[i-1][j].is_uncovered == false){
 				cells_[i-1][j].is_uncovered =true;
 				remain_cells_--;
 				checkAndUncoverAroundCells(i-1,j);
 		}
-		if (i+1 < grid_width_ && cells_[i+1][j].is_flagged != true){
+		
+		if (i+1 < grid_width_ && cells_[i+1][j].is_flagged != true && 				cells_[i+1][j].is_uncovered == false){
 				cells_[i+1][j].is_uncovered =true;
 				remain_cells_--;
 				checkAndUncoverAroundCells(i+1,j);
 		}
-		if (i-1 >= 0 && j+1 < grid_height_ && cells_[i-1][j+1].is_flagged != true){
+		
+		if (i-1 >= 0 && j+1 < grid_height_ && cells_[i-1][j+1].is_flagged != true &&cells_[i-1][j+1].is_uncovered == false){
 				cells_[i-1][j+1].is_uncovered =true;
 				remain_cells_--;
 				checkAndUncoverAroundCells(i-1,j+1);
 		}
-		if (j+1 < grid_height_ && cells_[i][j+1].is_flagged != true){
+		
+		if (j+1 < grid_height_ && cells_[i][j+1].is_flagged != true && cells_[i][j+1].is_uncovered == false){
 				cells_[i][j+1].is_uncovered =true;
 				remain_cells_--;
 				checkAndUncoverAroundCells(i,j+1);
 		}
-		if (i+1 < grid_width_ && j+1 < grid_height_ && cells_[i+1][j+1].is_flagged != true){
+
+		if (i+1 < grid_width_ && j+1 < grid_height_ && cells_[i+1][j+1].is_flagged != true && cells_[i+1][j+1].is_uncovered == false){
 				cells_[i+1][j+1].is_uncovered =true;
 				remain_cells_--;
 				checkAndUncoverAroundCells(i+1,j+1);
 		}
 		
-		this->redraw();
+		//		this->redraw();
 	}			
 }
 
@@ -298,5 +304,5 @@ void GameBoard::checkGameStatus(){
 		status_ = WIN;
 	else{
 		status_ = RUN;
-	}		
+	}
 }

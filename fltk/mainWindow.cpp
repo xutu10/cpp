@@ -56,7 +56,7 @@ void mainWindow::_initMenuBar(){
 		{ "Game", 0, 0, 0, FL_SUBMENU},
 		{ "new game", 0,(Fl_Callback*) menu_new_game_cb,this},
 		{ "high score", 0,0,0},
-		{ "exit" , 0,0,0},
+		{ "exit" , 0,(Fl_Callback*)quit_cb},
 		{0},
 		{ "help", 0,0,0, FL_SUBMENU},
 		{ "about", 0,(Fl_Callback*) about_cb,this},
@@ -71,12 +71,12 @@ void mainWindow::_initMenuBar(){
 }
 
 void mainWindow::_initStatusBar(){
-
-	this->_statusBox = new Fl_Box(FL_EMBOSSED_BOX,10,(30+18),32,32,nullptr);
+	// no need
+	//	this->_statusBox = new Fl_Box(FL_EMBOSSED_BOX,10,(30+18),32,32,nullptr);
 	this->_mines = new Fl_Box(FL_BORDER_BOX,200,(30+18),48,32,"Mines");
 	this->_timer = new Fl_Box(FL_BORDER_BOX,100,(30+18),48,32,"Timer");
 
-	this->add(this->_statusBox);
+	//this->add(this->_statusBox);
 	this->add(this->_mines);
 	this->add(this->_timer);
 	
@@ -135,14 +135,14 @@ int timer;
 stringstream ss;
 
 void mainWindow::_updateGameStatus(){
-
 	if(gameBoard_->status_ == GAMEOVER){
 		cout<<"gameover"<<endl;
 		_gameOver();
 	}
-	else if(gameBoard_->status_ == WIN)
+	else if(gameBoard_->status_ == WIN){
+		cout<<"game won"<<endl;
 		_gameWon();
-	else{
+	}else{
 		// show the timer
 		timer = gameBoard_->getGameTime();
 		ss.str("");
@@ -159,7 +159,6 @@ void mainWindow::_updateGameStatus(){
 
 void mainWindow::_resetGame(){
 
-	Fl::remove_timeout(timer_cb,this);
     this-> gameBoard_->deactivate();
 	delete gameBoard_;
 }
@@ -167,20 +166,17 @@ void mainWindow::_resetGame(){
 void mainWindow::_gameOver(){
 
 	// TODO set image
-	this->_resetGame();
-	
-	Fl::wait(); // wait something happens
-	fl_beep();
+	Fl::remove_timeout(timer_cb,this);
 	fl_message("game over!!!");
+	this->_resetGame();
   
 }
 
 void mainWindow::_gameWon(){
 	// TODO set image
-	this->_resetGame();
+	Fl::remove_timeout(timer_cb,this);
+	fl_message("game won!!!");
 
-	Fl::wait();
-	fl_beep();
-	fl_message_title("game won!!!");
+	this->_resetGame();
    
 }
