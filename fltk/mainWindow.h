@@ -8,6 +8,7 @@
 
 #include "newGameDialog.h"
 #include "GameBoard.h"
+#include "Scores.h"
 
 class mainWindow : public Fl_Window{
 
@@ -21,6 +22,8 @@ class mainWindow : public Fl_Window{
 	friend void about_cb(Fl_Widget*, void*);
 	friend void timer_cb(void*);
 	friend void menu_new_game_cb(Fl_Widget*, void*);
+	friend void show_high_scores_cb(Fl_Widget*, void*);
+	
  private:
 	void _initMenuBar();
 	void _initStatusBar();
@@ -32,6 +35,7 @@ class mainWindow : public Fl_Window{
 	void _updateGameStatus();
 	void _gameWon();
 	void _gameOver();
+	void _showHighScores();
 	
  private:
 	Fl_Menu_Bar* _menuBar;
@@ -41,6 +45,7 @@ class mainWindow : public Fl_Window{
 
 	newGameDialog* _newgame = nullptr;
 	GameBoard* gameBoard_ = nullptr;
+	Scores* scores_ = nullptr;
 };
 
 

@@ -19,11 +19,13 @@ void menu_new_game_cb(Fl_Widget*, void* ctx){
 }
 
 
-// void show_high_scores_cb(Fl_Widget*, void* ctx){
-// 	mainWindow* m = static_cast<mainWindow *>(ctx);
+void show_high_scores_cb(Fl_Widget*, void* ctx){
 
-// 	m->_showHighScores();
-// }
+	mainWindow* m = static_cast<mainWindow *>(ctx);
+
+	m->_showHighScores();
+	
+}
 
 void about_cb(Fl_Widget*, void* ctx){
 
@@ -47,7 +49,9 @@ mainWindow::mainWindow(int w,int h,const char* t): Fl_Window(w,h){
 }
 
 mainWindow::~mainWindow(){
-	
+
+	// need in mainwindow ??? or in class seperately
+	delete _newgame, gameBoard_, scores_;
 }
 
 void mainWindow::_initMenuBar(){
@@ -55,7 +59,7 @@ void mainWindow::_initMenuBar(){
 	static const Fl_Menu_Item _menuItems[] = {
 		{ "Game", 0, 0, 0, FL_SUBMENU},
 		{ "new game", 0,(Fl_Callback*) menu_new_game_cb,this},
-		{ "high score", 0,0,0},
+		{ "high score", 0,(Fl_Callback*)show_high_scores_cb,this},
 		{ "exit" , 0,(Fl_Callback*)quit_cb},
 		{0},
 		{ "help", 0,0,0, FL_SUBMENU},
@@ -88,6 +92,15 @@ void mainWindow::_aboutDialog(){
 	fl_message_title("about");
 	fl_message("this is tu xu");
 	
+}
+
+void mainWindow::_showHighScores(){
+
+	this->scores_ = new Scores();
+	this->scores_ -> show();
+
+	while(this->scores_->shown())
+		Fl::wait();
 }
 
 void mainWindow::_newGameCb(){

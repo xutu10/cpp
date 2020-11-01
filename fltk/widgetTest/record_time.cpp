@@ -3,6 +3,8 @@
 #include<algorithm>
 #include<ctime>
 #include<unistd.h> // sleep
+#include<cstring>
+
 using namespace std;
 
 int main(){
@@ -10,7 +12,8 @@ int main(){
 	srand(time(NULL));	
 	ofstream record;
 	record.open("record.txt");
-
+	string name;
+	
 	for(int i = 0; i < 3; i++){
 		switch(i){
 		  case 0 : record<<"simple"<<endl;
@@ -27,9 +30,14 @@ int main(){
 		sleep(sleepTime);
 		time_t  diff = time(nullptr) - startTime ;
 
-		record<<diff<<" "<<showTime<<endl;
+		cout<<"leave your name"<<endl;;
+		getline(cin,name);
+	
+		record<<diff<<" "<<name<<" "<<showTime<<endl;
 	}
 
+	
+	
 	record.close();	
 	
 	return 0;
