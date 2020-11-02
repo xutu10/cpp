@@ -21,21 +21,23 @@ class mainWindow : public Fl_Window{
  private:
 	friend void about_cb(Fl_Widget*, void*);
 	friend void timer_cb(void*);
-	friend void menu_new_game_cb(Fl_Widget*, void*);
+	friend void new_game_cb(Fl_Widget*, void*);
+	friend void select_new_game_cb(Fl_Widget*, void*);
 	friend void show_high_scores_cb(Fl_Widget*, void*);
 	
  private:
 	void _initMenuBar();
 	void _initStatusBar();
 	void _aboutDialog();
-	void _newGameCb();
-	void _resetGame();
-	void _setupBoardSize(int w,int h,int m);
+	void _optionNewGameCb();
+	//void _resetGame();
 	void _reshapeMainwindow(int w, int h);
 	void _updateGameStatus();
-	void _gameWon();
+	void _gameWon(int);
 	void _gameOver();
 	void _showHighScores();
+	void _newGame();
+	void _checkScores(int);
 	
  private:
 	Fl_Menu_Bar* _menuBar;

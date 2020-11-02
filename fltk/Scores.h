@@ -9,8 +9,11 @@
 
 #include<fstream>
 #include<sstream> // istringstream
+#include<vector>
+#include<cstring>
+using namespace std;
 
-
+using v_string = vector<string>;
 
 class Scores : public Fl_Window{
  public:
@@ -18,7 +21,8 @@ class Scores : public Fl_Window{
 	~Scores();
 
  private:
-	void showScores_(int);	
+	void showScores_(int);
+	void getScores_();
 	
  private:
 	friend void selectCb(Fl_Widget*, void*);
@@ -28,6 +32,7 @@ class Scores : public Fl_Window{
 	Fl_Hold_Browser* brw_;
 	Fl_Multiline_Output* out_;
 	Fl_Button* button_;
+	vector<v_string> scores_;
 };
 
 #endif

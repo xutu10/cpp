@@ -42,7 +42,13 @@ Scores::Scores():Fl_Window(500,300,"Scores"){
 	this->add(out_);
 	this->end();
 	this->show();
-	
+
+	for(int i = 0; i < 3; i++) {
+		scores_.push_back(vector<string>());
+		for(int j = 0; j < 3 ; j++)
+			scores_[i].push_back(string());
+	}
+	this->getScores_();
 }
 
 Scores::~Scores(){
@@ -54,15 +60,30 @@ Scores::~Scores(){
 void Scores::showScores_(int level){
 
 	string line;
-	ifstream fin("record.txt");
+	out_-> cut(0, out_->size());
 
+	for(int i = 0; i < 3; i++){
+		line = scores_[level-1][i];
+		line += "\n";
+		out_->insert(line.c_str());
+
+	}
+}
+
+void Scores::getScores_(){
+
+	string line;
+	ifstream fin("record.txt");
+	int level = 0;
+	
 	while(fin.is_open() && getline(fin, line)){
-		if(line == diffiList[level-1]){
-			for(int i = 0; i < 1; i++){
-				getline(fin, line);
-				out_->replace(0,out_->size(),line.c_str());
+		if(level < 3 && line == diffiList[level]){
+			for(int i = 0; i < 3; i++){
+				if(getline(fin, line)){
+					scores_[level][i]=line;
+				}
 			}
-			break;
+			level++;
 		}
 	}
 	fin.close();
