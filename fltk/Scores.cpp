@@ -3,6 +3,7 @@
 #include<cstring>
 #include<vector>
 #include<iostream>
+#include<fstream>
 using namespace std;
 
 vector<string> diffiList = {"simple", "medium","hard"};
@@ -41,12 +42,11 @@ Scores::Scores():Fl_Window(500,300,"Scores"){
 	this->add(brw_);
 	this->add(out_);
 	this->end();
-	this->show();
 
 	for(int i = 0; i < 3; i++) {
-		scores_.push_back(vector<string>());
+		scoresData_.push_back(vector<string>());
 		for(int j = 0; j < 3 ; j++)
-			scores_[i].push_back(string());
+			scoresData_[i].push_back(string());
 	}
 	this->getScores_();
 }
@@ -63,7 +63,7 @@ void Scores::showScores_(int level){
 	out_-> cut(0, out_->size());
 
 	for(int i = 0; i < 3; i++){
-		line = scores_[level-1][i];
+		line = scoresData_[level-1][i];
 		line += "\n";
 		out_->insert(line.c_str());
 
@@ -80,11 +80,29 @@ void Scores::getScores_(){
 		if(level < 3 && line == diffiList[level]){
 			for(int i = 0; i < 3; i++){
 				if(getline(fin, line)){
-					scores_[level][i]=line;
+					scoresData_[level][i]=line;
 				}
 			}
 			level++;
 		}
 	}
 	fin.close();
+}
+
+
+void Scores::updateScores_(){
+
+	ofstream fout("tmp.txt");
+
+	for(int i = 0; i < 3 ; i++){
+		fout<<diffiList[i]<<"\n";
+		for(int j = 0 ; j < 3 ; j++)
+			fout<<scoresData_[i][j]<<"\n";
+	}
+
+	fout.close();
+	
+	std::remove("record.txt");
+	rename("tmp.txt","record.txt");
+	
 }

@@ -6,6 +6,8 @@
 #include<ctime>
 #include<sstream>
 #include<iomanip>
+#include<sstream>  // istringstream, stringstream
+
 using namespace std;
 
 void quit_cb(Fl_Widget*, void* ctx){
@@ -47,7 +49,9 @@ void timer_cb(void* ctx){
 mainWindow::mainWindow(int w,int h,const char* t): Fl_Window(w,h){
 
 	this->_initMenuBar();
-	this->_initStatusBar();	
+	this->_initStatusBar();
+	this->scores_ = new Scores();
+
 }
 
 mainWindow::~mainWindow(){
@@ -99,7 +103,6 @@ void mainWindow::_aboutDialog(){
 
 void mainWindow::_showHighScores(){
 
-	this->scores_ = new Scores();
 	this->scores_ -> show();
 
 	while(this->scores_->shown())
@@ -128,18 +131,13 @@ void mainWindow::_newGame(){
 	if(this->gameBoard_!= nullptr)
 		delete this->gameBoard_;
 	
-	cout<<"1"<<endl;	
-
 	int w = this->_newgame->getBoardW();
 	int h = this->_newgame->getBoardH();
 	int mines = this->_newgame->getMines();
 
-	cout<<w<<","<<h<<","<<mines<<endl;
 	if(mines != 0)
 		this->gameBoard_ = new GameBoard(10,100,w,h,mines,this);
 
-	cout<<"3"<<endl;
-	
 	this->add(gameBoard_);
 	this->_updateGameStatus();
 	
@@ -183,12 +181,12 @@ void mainWindow::_updateGameStatus(){
 }
 
 // no more need
-void mainWindow::_resetGame(){
+// void mainWindow::_resetGame(){
 
-    this-> gameBoard_->deactivate();
-	// if (!= nullptr) not work???
-	//	delete gameBoard_;
-}
+//     this-> gameBoard_->deactivate();
+// 	if (!= nullptr) not work???
+// 	  delete gameBoard_;
+// }
 
 void mainWindow::_gameOver(){
 
@@ -196,7 +194,11 @@ void mainWindow::_gameOver(){
 	Fl::remove_timeout(timer_cb,this);
 	fl_message("game over!!!");
     this-> gameBoard_->deactivate();
-  
+
+	// just for test here
+	_checkScores(timer);
+
+	
 }
 
 void mainWindow::_gameWon(int timer){
@@ -210,9 +212,41 @@ void mainWindow::_gameWon(int timer){
    
 }
 
-void mainWindow::_checkScores(int timer){
+int mainWindow::_checkScores(int timer) const{
 
+	int update = -1;
+	int counter;
+	int level = _newgame->getDiffculty();
+	string item;
+	for(int i = 0; i < 3; i++){
+		item = scores_->scoresData_[level][i];
+		istringstream isstr(item);
+		isstr>>counter;
+		if(timer < counter){
+			update = i;
+			break;
+		}
+	}
+   
+	return update;
+}
+
+void mainWindow::_updateScores(int update, int timer){
+
+	const char* name = fl_input("leave your name");
+	string tmp, tmp1;
+	int level = _newgame->getDiffculty();
 	
+	stringstream newItem;
+	newItem<< timer << name << time(nullptr);
 
+	tmp = scores_->scoresData_[level][i];
+	scores_->scoresData_[level][i] = newItem.str();
+	// or vector insert
+	for(int i = update+1; i < 3; i++ ){
+		tmp1 = scores_->scoresData_[level][i];
+		scores_->scoresData_[level][i] = tmp;
+		tmp = tmp1;		
+	}
 	
 }

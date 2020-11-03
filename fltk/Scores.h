@@ -16,6 +16,8 @@ using namespace std;
 using v_string = vector<string>;
 
 class Scores : public Fl_Window{
+ friend class mainWindow;
+	
  public:
 	Scores();
 	~Scores();
@@ -23,7 +25,7 @@ class Scores : public Fl_Window{
  private:
 	void showScores_(int);
 	void getScores_();
-	
+	void updateScores_();
  private:
 	friend void selectCb(Fl_Widget*, void*);
 	friend void okCb(Fl_Widget*, void*);
@@ -32,7 +34,7 @@ class Scores : public Fl_Window{
 	Fl_Hold_Browser* brw_;
 	Fl_Multiline_Output* out_;
 	Fl_Button* button_;
-	vector<v_string> scores_;
+	vector<v_string> scoresData_;
 };
 
 #endif

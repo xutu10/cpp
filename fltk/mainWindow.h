@@ -37,7 +37,8 @@ class mainWindow : public Fl_Window{
 	void _gameOver();
 	void _showHighScores();
 	void _newGame();
-	void _checkScores(int);
+	int _checkScores(int) const;
+	void _updateScores(int,int);
 	
  private:
 	Fl_Menu_Bar* _menuBar;
