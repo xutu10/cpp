@@ -49,6 +49,13 @@ Scores::Scores():Fl_Window(500,300,"Scores"){
 			scoresData_[i].push_back(string());
 	}
 	this->getScores_();
+
+	// test
+	// for(auto i : scoresData_){
+	// 	for(auto j : i)
+	// 		cout<<j<<endl;
+	// }
+		
 }
 
 Scores::~Scores(){
@@ -64,7 +71,6 @@ void Scores::showScores_(int level){
 
 	for(int i = 0; i < 3; i++){
 		line = scoresData_[level-1][i];
-		line += "\n";
 		out_->insert(line.c_str());
 
 	}
@@ -80,7 +86,7 @@ void Scores::getScores_(){
 		if(level < 3 && line == diffiList[level]){
 			for(int i = 0; i < 3; i++){
 				if(getline(fin, line)){
-					scoresData_[level][i]=line;
+					scoresData_[level][i]=line+"\n";
 				}
 			}
 			level++;
@@ -90,14 +96,14 @@ void Scores::getScores_(){
 }
 
 
-void Scores::updateScores_(){
+void Scores::updateScoresFile_(){
 
 	ofstream fout("tmp.txt");
 
 	for(int i = 0; i < 3 ; i++){
 		fout<<diffiList[i]<<"\n";
 		for(int j = 0 ; j < 3 ; j++)
-			fout<<scoresData_[i][j]<<"\n";
+			fout<<scoresData_[i][j];
 	}
 
 	fout.close();

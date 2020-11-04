@@ -25,7 +25,7 @@ class Scores : public Fl_Window{
  private:
 	void showScores_(int);
 	void getScores_();
-	void updateScores_();
+	void updateScoresFile_();
  private:
 	friend void selectCb(Fl_Widget*, void*);
 	friend void okCb(Fl_Widget*, void*);

@@ -160,11 +160,9 @@ void mainWindow::_updateGameStatus(){
 	timer = gameBoard_->getGameTime();
 
 	if(gameBoard_->status_ == GAMEOVER){
-		cout<<"gameover"<<endl;
 		_gameOver();
 	}
 	else if(gameBoard_->status_ == WIN){
-		cout<<"game won"<<endl;
 		_gameWon(timer);
 	}else{
 		// show the timer
@@ -193,12 +191,9 @@ void mainWindow::_gameOver(){
 	// TODO set image
 	Fl::remove_timeout(timer_cb,this);
 	fl_message("game over!!!");
-    this-> gameBoard_->deactivate();
+	//    this-> gameBoard_->deactivate();
 
 	// just for test here
-	_checkScores(timer);
-
-	
 }
 
 void mainWindow::_gameWon(int timer){
@@ -206,9 +201,11 @@ void mainWindow::_gameWon(int timer){
 	Fl::remove_timeout(timer_cb,this);
 	fl_message("game won!!!");
 
-	_checkScores(timer);
+	int update;
+	if((update =_checkScores(timer)) > -1)
+		_updateScores(update, timer);
 
-    this-> gameBoard_->deactivate();
+	//    this-> gameBoard_->deactivate();
    
 }
 
@@ -238,15 +235,13 @@ void mainWindow::_updateScores(int update, int timer){
 	int level = _newgame->getDiffculty();
 	
 	stringstream newItem;
-	newItem<< timer << name << time(nullptr);
+	time_t time_tmp = time(nullptr);
+	char* outTime = asctime(localtime(&time_tmp));
+	newItem<< timer<<" "<< name <<" "<< outTime;
 
-	tmp = scores_->scoresData_[level][i];
-	scores_->scoresData_[level][i] = newItem.str();
-	// or vector insert
-	for(int i = update+1; i < 3; i++ ){
-		tmp1 = scores_->scoresData_[level][i];
-		scores_->scoresData_[level][i] = tmp;
-		tmp = tmp1;		
-	}
-	
+	vector<string> *str_tmp = &scores_->scoresData_[level];
+	str_tmp->insert(str_tmp->begin()+update, newItem.str());
+	str_tmp->erase(str_tmp->begin()+3);
+
+	scores_->updateScoresFile_();
 }
