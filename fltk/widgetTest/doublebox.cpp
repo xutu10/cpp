@@ -13,15 +13,16 @@ public:
 		y_=y;
 		// call the member of base class with bracket
 		std::cout<<this->w()<<","<<this->x()<<std::endl;
-		img = new Fl_PNG_Image("flower.png");
+		img = new Fl_PNG_Image("mine.png");
 	
 	}
 
 	void draw(){
-		//Fl_Box::draw(); // draw the large box
+
+		Fl_Box::draw(); // draw the large box
 		fl_draw_box(FL_UP_BOX, x_, y_, 16, 16, FL_GRAY);
 		fl_draw_box(FL_UP_BOX, x_+16, y_+16, 16, 16, FL_GRAY);
-		this->img->draw(50,50);
+		this->img->draw(x_+16,y_+16);
 	}
 
 private:
@@ -30,10 +31,11 @@ private:
 };
 
 int main(int argc, char** argv){
+
 	Fl_Window* window = new Fl_Window(300, 300);
 	GameBoard* box = new GameBoard(10,10, 250,250,"my box");
 	
-	//	Fl_Box::draw();
+	//	box->draw();
 	
 	//	fl_draw_box(FL_UP_BOX, x, y, 16, 16, FL_GRAY);
 

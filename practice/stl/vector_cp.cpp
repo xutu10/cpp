@@ -10,7 +10,7 @@
 
 int main(){
 
-	using v_int = std::vector<int>;
+o	using v_int = std::vector<int>;
 	
 	v_int data{1,2,3};
    

@@ -5,7 +5,12 @@
 #include <iostream>
 #include<FL/Fl_Multiline_Output.H>
 #include<FL/fl_ask.H>
+
+#include<cstring>
+#include<vector>
 using namespace std;
+
+vector<string> v = {"simple" , "medium", "hard"};
 
 Fl_Multiline_Output* out;
 
@@ -22,10 +27,11 @@ void cb_select(Fl_Widget*, void* b){
 		
 	}
 
-	char* s = "show";
-	
+	char* s = "show \n";
+	char* n = "new line \n";
 	if(current){
-		out->value(s);
+		out->insert(s);
+		out->insert(n);
 	}
 		
 }
@@ -36,15 +42,9 @@ int main(int argc, char** argv){
 	Fl_Hold_Browser* browser = new Fl_Hold_Browser(10, 10, 100, 60, "Level");
     out = new Fl_Multiline_Output(200, 10, 100,50);
 
-	char* simple = "Simple";
-	browser->insert(1, simple, 0);
-	
-	char* medium = "Medium";
-	browser->insert(2, medium, 0);
 
-	char* diffic = "Difficulty";
-	browser->insert(3, diffic, 0);
-
+	for(int i = 0; i < v.size(); i++)
+		browser->insert(i,v[i].c_str());
 
 	browser->callback(cb_select,browser);
 	
