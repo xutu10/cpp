@@ -7,6 +7,7 @@
 
 #include"Snake.h"
 
+static const int CELL_SIZE = 8;
 class mainWindow : public Fl_Window{
 
  public:
@@ -17,12 +18,14 @@ class mainWindow : public Fl_Window{
 	friend void newGame_cb(Fl_Widget*, void*);
 	friend void timer_cb(void*);
 
+	void initMenu_();
+	void initGrid_();
 	void checkGameStatus_();
 	void gameOver_();
 
  private:
 	Fl_Menu_Bar* menuBar_;
-	Snake* snake_;
+	//	Snake* snake_;
 	
 };
 
