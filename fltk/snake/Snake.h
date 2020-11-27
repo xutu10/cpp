@@ -40,7 +40,7 @@ class Snake : public Fl_Box{
 	int status_,points_;  // 0 run, 1 over
 	int dx_, dy_;
 	vector<Point> s_;
-	Point* newP_;
+	Point* Bonus_;
 };
 
 

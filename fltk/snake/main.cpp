@@ -9,8 +9,8 @@ using namespace std;
 int main(int argc, char* argv[]){
 
 	srand(time(NULL));
-	Fl_Window* window = new Fl_Window(300, 300);
-	Snake* snake = new Snake(10,10);
+	Fl_Window* window = new Fl_Window(240, 240);
+	Snake* snake = new Snake(0,0);
 	
 	window->end();
 	window->show();	
