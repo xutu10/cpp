@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <time.h>
+#include<algorithm> // std::find()
 using namespace std;
 
 static const int CELL_SIZE = 8;
@@ -56,6 +57,7 @@ void Snake::draw(){
 		for(int i = 0; i < s_.size()-1;i++)
 			fl_draw_box(FL_UP_BOX, x0_+s_[i].x*CELL_SIZE, y0_+s_[i].y*CELL_SIZE, CELL_SIZE, CELL_SIZE, FL_GRAY);
 
+		// clear the last point
 		int size = s_.size()-1;
 		fl_draw_box(FL_FLAT_BOX, x0_+s_[size].x*CELL_SIZE, y0_+s_[size].y*CELL_SIZE, CELL_SIZE, CELL_SIZE,FL_GRAY);
 		
@@ -116,6 +118,15 @@ void Snake::checkGameStatus_(){
 		Fl::remove_timeout(timer_cb);
 		fl_message("game over");
 		exit(0);
+	}
+
+	auto rslt =	find(s_.begin()+1, s_.end(), s_[0]);
+	if(rslt != s_.end()){
+
+		Fl::remove_timeout(timer_cb);
+		fl_message("game over");
+		exit(0);
+
 	}
 		
 
